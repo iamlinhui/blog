@@ -1,0 +1,467 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.blog.mapper.PostsMapper" >
+  <resultMap id="BaseResultMap" type="com.blog.pojo.Posts" >
+    <id column="ID" property="id" jdbcType="BIGINT" />
+    <result column="post_author" property="postAuthor" jdbcType="BIGINT" />
+    <result column="post_date" property="postDate" jdbcType="TIMESTAMP" />
+    <result column="post_status" property="postStatus" jdbcType="VARCHAR" />
+    <result column="comment_status" property="commentStatus" jdbcType="VARCHAR" />
+    <result column="post_name" property="postName" jdbcType="VARCHAR" />
+    <result column="comment_count" property="commentCount" jdbcType="BIGINT" />
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="com.blog.pojo.PostsWithBLOBs" extends="BaseResultMap" >
+    <result column="post_content" property="postContent" jdbcType="LONGVARCHAR" />
+    <result column="post_title" property="postTitle" jdbcType="LONGVARCHAR" />
+    <result column="post_excerpt" property="postExcerpt" jdbcType="LONGVARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    ID, post_author, post_date, post_status, comment_status, post_name, comment_count
+  </sql>
+  <sql id="Blob_Column_List" >
+    post_content, post_title, post_excerpt
+  </sql>
+  <select id="selectByExampleWithBLOBs" resultMap="ResultMapWithBLOBs" parameterType="com.blog.pojo.PostsExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from wp_posts
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.blog.pojo.PostsExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from wp_posts
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from wp_posts
+    where ID = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from wp_posts
+    where ID = #{id,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.blog.pojo.PostsExample" >
+    delete from wp_posts
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.blog.pojo.PostsWithBLOBs" >
+    insert into wp_posts (ID, post_author, post_date, 
+      post_status, comment_status, post_name, 
+      comment_count, post_content, post_title, 
+      post_excerpt)
+    values (#{id,jdbcType=BIGINT}, #{postAuthor,jdbcType=BIGINT}, #{postDate,jdbcType=TIMESTAMP}, 
+      #{postStatus,jdbcType=VARCHAR}, #{commentStatus,jdbcType=VARCHAR}, #{postName,jdbcType=VARCHAR}, 
+      #{commentCount,jdbcType=BIGINT}, #{postContent,jdbcType=LONGVARCHAR}, #{postTitle,jdbcType=LONGVARCHAR}, 
+      #{postExcerpt,jdbcType=LONGVARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.blog.pojo.PostsWithBLOBs" useGeneratedKeys="true" keyProperty="id">
+    insert into wp_posts
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        ID,
+      </if>
+      <if test="postAuthor != null" >
+        post_author,
+      </if>
+      <if test="postDate != null" >
+        post_date,
+      </if>
+      <if test="postStatus != null" >
+        post_status,
+      </if>
+      <if test="commentStatus != null" >
+        comment_status,
+      </if>
+      <if test="postName != null" >
+        post_name,
+      </if>
+      <if test="commentCount != null" >
+        comment_count,
+      </if>
+      <if test="postContent != null" >
+        post_content,
+      </if>
+      <if test="postTitle != null" >
+        post_title,
+      </if>
+      <if test="postExcerpt != null" >
+        post_excerpt,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="postAuthor != null" >
+        #{postAuthor,jdbcType=BIGINT},
+      </if>
+      <if test="postDate != null" >
+        #{postDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="postStatus != null" >
+        #{postStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="commentStatus != null" >
+        #{commentStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="postName != null" >
+        #{postName,jdbcType=VARCHAR},
+      </if>
+      <if test="commentCount != null" >
+        #{commentCount,jdbcType=BIGINT},
+      </if>
+      <if test="postContent != null" >
+        #{postContent,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="postTitle != null" >
+        #{postTitle,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="postExcerpt != null" >
+        #{postExcerpt,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.blog.pojo.PostsExample" resultType="java.lang.Integer" >
+    select count(*) from wp_posts
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update wp_posts
+    <set >
+      <if test="record.id != null" >
+        ID = #{record.id,jdbcType=BIGINT},
+      </if>
+      <if test="record.postAuthor != null" >
+        post_author = #{record.postAuthor,jdbcType=BIGINT},
+      </if>
+      <if test="record.postDate != null" >
+        post_date = #{record.postDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.postStatus != null" >
+        post_status = #{record.postStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="record.commentStatus != null" >
+        comment_status = #{record.commentStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="record.postName != null" >
+        post_name = #{record.postName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.commentCount != null" >
+        comment_count = #{record.commentCount,jdbcType=BIGINT},
+      </if>
+      <if test="record.postContent != null" >
+        post_content = #{record.postContent,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="record.postTitle != null" >
+        post_title = #{record.postTitle,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="record.postExcerpt != null" >
+        post_excerpt = #{record.postExcerpt,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExampleWithBLOBs" parameterType="map" >
+    update wp_posts
+    set ID = #{record.id,jdbcType=BIGINT},
+      post_author = #{record.postAuthor,jdbcType=BIGINT},
+      post_date = #{record.postDate,jdbcType=TIMESTAMP},
+      post_status = #{record.postStatus,jdbcType=VARCHAR},
+      comment_status = #{record.commentStatus,jdbcType=VARCHAR},
+      post_name = #{record.postName,jdbcType=VARCHAR},
+      comment_count = #{record.commentCount,jdbcType=BIGINT},
+      post_content = #{record.postContent,jdbcType=LONGVARCHAR},
+      post_title = #{record.postTitle,jdbcType=LONGVARCHAR},
+      post_excerpt = #{record.postExcerpt,jdbcType=LONGVARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update wp_posts
+    set ID = #{record.id,jdbcType=BIGINT},
+      post_author = #{record.postAuthor,jdbcType=BIGINT},
+      post_date = #{record.postDate,jdbcType=TIMESTAMP},
+      post_status = #{record.postStatus,jdbcType=VARCHAR},
+      comment_status = #{record.commentStatus,jdbcType=VARCHAR},
+      post_name = #{record.postName,jdbcType=VARCHAR},
+      comment_count = #{record.commentCount,jdbcType=BIGINT}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.blog.pojo.PostsWithBLOBs" >
+    update wp_posts
+    <set >
+      <if test="postAuthor != null" >
+        post_author = #{postAuthor,jdbcType=BIGINT},
+      </if>
+      <if test="postDate != null" >
+        post_date = #{postDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="postStatus != null" >
+        post_status = #{postStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="commentStatus != null" >
+        comment_status = #{commentStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="postName != null" >
+        post_name = #{postName,jdbcType=VARCHAR},
+      </if>
+      <if test="commentCount != null" >
+        comment_count = #{commentCount,jdbcType=BIGINT},
+      </if>
+      <if test="postContent != null" >
+        post_content = #{postContent,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="postTitle != null" >
+        post_title = #{postTitle,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="postExcerpt != null" >
+        post_excerpt = #{postExcerpt,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.blog.pojo.PostsWithBLOBs" >
+    update wp_posts
+    set post_author = #{postAuthor,jdbcType=BIGINT},
+      post_date = #{postDate,jdbcType=TIMESTAMP},
+      post_status = #{postStatus,jdbcType=VARCHAR},
+      comment_status = #{commentStatus,jdbcType=VARCHAR},
+      post_name = #{postName,jdbcType=VARCHAR},
+      comment_count = #{commentCount,jdbcType=BIGINT},
+      post_content = #{postContent,jdbcType=LONGVARCHAR},
+      post_title = #{postTitle,jdbcType=LONGVARCHAR},
+      post_excerpt = #{postExcerpt,jdbcType=LONGVARCHAR}
+    where ID = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.blog.pojo.Posts" >
+    update wp_posts
+    set post_author = #{postAuthor,jdbcType=BIGINT},
+      post_date = #{postDate,jdbcType=TIMESTAMP},
+      post_status = #{postStatus,jdbcType=VARCHAR},
+      comment_status = #{commentStatus,jdbcType=VARCHAR},
+      post_name = #{postName,jdbcType=VARCHAR},
+      comment_count = #{commentCount,jdbcType=BIGINT}
+    where ID = #{id,jdbcType=BIGINT}
+  </update>
+  
+  
+  <!-- void batchDeleteArticles(@Param("deleteId")List<Integer> deleteId); -->
+  <delete id="batchDeleteArticles">
+  	DELETE 
+	FROM `wp_posts` 
+	WHERE `ID` IN
+	<foreach collection="deleteId" open="(" close=")" separator="," item="id">
+		#{id}
+	</foreach>
+  </delete>
+  
+  
+  <!-- List<PostsWithBLOBs> selectArticlesWithTerms(@Param("postStatus")String postStatus); -->
+  <select id="selectArticlesWithTerms" resultMap="selectArticlesWithTermsNotContentResultMap">
+  	SELECT p.`ID`,
+		p.`post_author`,
+		p.`post_date`,
+		p.`post_excerpt`,
+		p.`post_name`,
+		p.`post_status`,
+		p.`post_title`,
+		p.`comment_count`,
+		p.`comment_status`,
+		t.`term_id`,
+		t.`name`,
+		t.`slug`
+	FROM `wp_posts` p 
+	LEFT JOIN `wp_term_relationships` r
+	ON p.`ID`=r.`object_id`
+	LEFT JOIN `wp_terms` t
+	ON t.`term_id`=r.`term_taxonomy_id`
+	<if test="postStatus!=null">WHERE p.`post_status`=#{postStatus}</if> 
+	ORDER BY p.`post_date` DESC
+  </select>
+  <!-- 包含文章内容的结果集 -->
+  <resultMap type="com.blog.pojo.PostsWithBLOBs" id="selectArticlesWithTermsResultMap" extends="BaseResultMap">
+  	<result column="post_content" property="postContent"/>
+  	<result column="post_excerpt" property="postExcerpt"/>
+  	<result column="post_title" property="postTitle"/>
+  	<collection property="term" ofType="com.blog.pojo.Terms">
+  		<id column="term_id" property="termId"/>
+	  	<result column="name" property="name"/>
+	  	<result column="slug" property="slug"/>
+  	</collection>
+  </resultMap>
+  
+  <!-- 不包含文章内容的结果集 -->
+   <resultMap type="com.blog.pojo.PostsWithBLOBs" id="selectArticlesWithTermsNotContentResultMap" extends="BaseResultMap">
+  	<result column="post_excerpt" property="postExcerpt"/>
+  	<result column="post_title" property="postTitle"/>
+  	<collection property="term" ofType="com.blog.pojo.Terms">
+  		<id column="term_id" property="termId"/>
+	  	<result column="name" property="name"/>
+	  	<result column="slug" property="slug"/>
+  	</collection>
+  </resultMap>
+  
+  <!-- PostsWithBLOBs selectArticleByPostsIdWithTerms(int postId); -->
+  <select id="selectArticleByPostsIdWithTerms" resultMap="selectArticlesWithTermsResultMap">
+  	SELECT p.`ID`,
+		p.`post_author`,
+		p.`post_content`,
+		p.`post_date`,
+		p.`post_excerpt`,
+		p.`post_name`,
+		p.`post_status`,
+		p.`post_title`,
+		p.`comment_count`,
+		p.`comment_status`,
+		t.`term_id`,
+		t.`name`,
+		t.`slug`
+		FROM `wp_posts` p 
+		LEFT JOIN `wp_term_relationships` r
+		ON p.`ID`=r.`object_id`
+		LEFT JOIN `wp_terms` t
+		ON t.`term_id`=r.`term_taxonomy_id`
+		WHERE p.`ID`=#{postId}
+		ORDER BY p.`post_date` DESC
+  </select>
+  
+  <!-- List<PostsWithBLOBs> getArticlesWithTermsBySlug(@Param("slug")String slug,@Param("postStatus") String postStatus); -->
+  <select id="getArticlesWithTermsBySlug" resultMap="selectArticlesWithTermsNotContentResultMap">
+  	SELECT 
+	  p.`ID`,
+	  p.`post_author`,
+	  p.`post_date`,
+	  p.`post_excerpt`,
+	  p.`post_name`,
+	  p.`post_status`,
+	  p.`post_title`,
+	  p.`comment_count`,
+	  p.`comment_status`,
+	  t.`term_id`,
+	  t.`name`,
+	  t.`slug` 
+	FROM
+	  `wp_terms` t 
+	  LEFT JOIN `wp_term_relationships` r 
+	    ON t.`term_id` = r.`term_taxonomy_id` 
+	  LEFT JOIN `wp_posts` p 
+	    ON r.`object_id` = p.`ID` 
+	WHERE t.`slug` = #{slug} AND p.`post_status`=#{postStatus}
+	ORDER BY p.`post_date` DESC
+  </select>
+  
+  <!-- List<PostsWithBLOBs> getArticlesWithTermsForSearch(@Param("postStatus")String postStatus, @Param("key")String key) -->
+  <select id="getArticlesWithTermsForSearch" resultMap="selectArticlesWithTermsNotContentResultMap">
+  	SELECT p.`ID`,
+		p.`post_author`,
+		p.`post_date`,
+		p.`post_excerpt`,
+		p.`post_name`,
+		p.`post_status`,
+		p.`post_title`,
+		p.`comment_status`,
+		p.`comment_count`,
+		t.`term_id`,
+		t.`name`,
+		t.`slug`
+	FROM `wp_posts` p 
+	LEFT JOIN `wp_term_relationships` r
+	ON p.`ID`=r.`object_id`
+	LEFT JOIN `wp_terms` t
+	ON t.`term_id`=r.`term_taxonomy_id`
+	WHERE p.`post_title` LIKE #{key}
+	<if test="postStatus!=null">AND p.`post_status`=#{postStatus}</if> 
+	ORDER BY p.`post_date` DESC
+  </select>
+
+</mapper>

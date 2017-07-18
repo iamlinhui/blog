@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.3.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd">
+
+
+
+	<!-- 1).扫描加载的IOC容器中 -->
+	<context:component-scan base-package="com.blog" use-default-filters="false">
+		<context:include-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+		<context:include-filter type="annotation" expression="org.springframework.web.bind.annotation.ControllerAdvice"/>
+	</context:component-scan>
+
+	<!-- 2).开启视图解析器 -->
+	<bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<property name="prefix" value="/WEB-INF/"></property>
+		<property name="suffix" value=".jsp"></property>
+	</bean>
+
+	<!-- 3).开启增强的基于注解的MVC模式 -->
+	<mvc:annotation-driven></mvc:annotation-driven>
+	
+	<!-- 4).SpringMVC处理不了的静态资源，现在交给tomcat的DefaultServlet;解决开启加强版的基于注解的MVC模式的问题 -->
+	<mvc:default-servlet-handler default-servlet-name="default"/>
+	
+	<!-- 5).配置文件上传的组件,id必须为:multipartResolver -->
+	<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+		<property name="defaultEncoding" value="utf-8"></property>
+		<property name="maxUploadSize" value="#{1024*1024*50}"></property>
+	</bean>
+	
+	
+	<!-- 7).绑定请求要转发的页面(解决不带逻辑处理的空方法) 只能映射GET请求 -->
+	<!-- <mvc:view-controller path="/login" view-name="page/login" /> -->
+	
+	
+	<!-- 9).配置异常处理 -->
+	<bean class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">
+		<property name="exceptionMappings">
+			<props>
+				<!-- 异常全类名 key：指定异常的全类名，值就视图名，经过视图解析器的流程 -->
+				<prop key="com.blog.exception.UserLoginErrorEmailExcepion">page/login</prop>
+				<prop key="com.blog.exception.UserLoginErrorExcepion">page/login</prop>
+				<prop key="com.blog.exception.NoUserLoginException">page/login</prop>
+				<prop key="com.blog.exception.RegistPageEmailErrorExcepion">page/regist</prop>
+				<prop key="com.blog.exception.RegistPageUserNameIsExistExcepion">page/regist</prop>
+				<prop key="com.blog.exception.RegistPageEmailIsExistExcepion">page/regist</prop>
+				<prop key="com.blog.exception.ForgetPageErrorEmailExcepion">page/forget</prop>
+				<prop key="com.blog.exception.ForgetPageEmailIsExistExcepion">page/forget</prop>
+				<prop key="com.blog.exception.AdminAccessForbiddenException">page/login</prop>
+			</props>
+		</property>
+		<!-- exceptionAttribute：指定捕获到的异常信息在请求域中是用哪个key保存的 -->
+		<property name="exceptionAttribute" value="error"></property>
+	</bean>
+	
+	
+	<!--10).配置自定义拦截器 -->
+	<mvc:interceptors>
+		<bean class="com.blog.Interceptor.LoginInterceptor"></bean>
+	</mvc:interceptors>
+
+</beans>
