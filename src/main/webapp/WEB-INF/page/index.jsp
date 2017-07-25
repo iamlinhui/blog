@@ -84,6 +84,15 @@ a{
 	            </c:forEach>
 	          </div>
 	   		  <%--第一个侧边框结束 --%>
+		 <%--第二个侧边框开始 --%>
+	   		  <div id="weather" class="list-group" hidden>
+	   		  	<li class="list-group-item list-group-item-info"><b>天气</b></li>
+	   		  	 <li class="list-group-item">
+		   		  	<img alt="" src="">
+	   		  	</li>
+	   		  	<li class="list-group-item">
+	   		  	</li>
+	   		  </div>
 	   		  
 	        </div>
 	        <%--侧边框结束--%>		
@@ -98,5 +107,21 @@ a{
 		    $('.row-offcanvas').toggleClass('active')
 		  });
 		});
+</script>
+<script type="text/javascript">
+	$(function() {
+		$.ajax({
+			url : "weather",
+			type : "post",
+			success : function(msg) {
+				if(msg.status==0){
+					$("#weather img").attr("src","static/weathercn/"+msg.result.img+".png");
+					$("#weather li:eq(2)").html(msg.result.city+msg.result.weather)
+					$("#weather").show();
+				}
+			},
+			dataType : "json"
+		});
+	});
 </script>
 </html>
