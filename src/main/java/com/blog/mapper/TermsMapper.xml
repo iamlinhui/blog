@@ -254,5 +254,15 @@
 	  `wp_terms` 
 	WHERE `slug`=#{slug}
   </select>
+   <!-- List<Terms> getTeamsByPostsId(long postsId); -->
+  <select id="getTeamsByPostsId" resultType="com.blog.pojo.Terms">
+  	SELECT t.`name`,
+			t.`slug`,
+			t.`term_id` 
+			FROM`wp_terms` t
+			LEFT JOIN `wp_term_relationships` r
+			ON t.`term_id`=r.`term_taxonomy_id`
+		WHERE r.`object_id`=#{id}
+  </select>
   
 </mapper>
