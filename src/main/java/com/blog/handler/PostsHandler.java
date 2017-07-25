@@ -31,6 +31,37 @@ public class PostsHandler {
 	OptionsService optionsService;
 	
 	/**
+	 * 获取天气
+	 */
+	@ResponseBody
+	@RequestMapping(value="weather",method=RequestMethod.POST)
+	public JSONObject getWeather(HttpServletRequest request) {
+		String appcode = optionsService.getOption(GlobalString.APPCODE);
+
+		if (appcode != null && appcode.trim().length() != 0) {
+
+			String ip = request.getHeader("x-forwarded-for");
+			if (ip == null || ip.length() == 0) {
+				ip = request.getRemoteAddr();
+			}
+
+			JSONObject weather = null;
+
+			try {
+				//本地演示的ip地址先写死,上传到云服务器的时候再改回来
+				weather = WeatherUtil.getWeather("119.137.117.230", appcode);
+
+			} catch (Exception e) {
+			}
+
+			if (weather != null) {
+				return weather;
+			}
+		}
+		return null;
+	}
+	
+	/**
 	 * 到首页去
 	 * 
 	 * @return
