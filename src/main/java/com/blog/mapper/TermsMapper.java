@@ -41,4 +41,6 @@ public interface TermsMapper {
 	long selectDownTargetTermsId(@Param("termsOrder")long termsOrder);
 
 	String geNameBySlug(@Param("slug")String slug);
+	
+	List<Terms> getTeamsByPostsId(long postsId);
 }
