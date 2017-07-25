@@ -416,7 +416,7 @@
   </select>
   
   <!-- List<PostsWithBLOBs> getArticlesWithTermsBySlug(@Param("slug")String slug,@Param("postStatus") String postStatus); -->
-  <select id="getArticlesWithTermsBySlug" resultMap="selectArticlesWithTermsNotContentResultMap">
+  <select id="getArticlesWithTermsBySlug" resultMap="selectBySlugWithTermsNotContentResultMap">
   	SELECT 
 	  p.`ID`,
 	  p.`post_author`,
@@ -439,6 +439,14 @@
 	WHERE t.`slug` = #{slug} AND p.`post_status`=#{postStatus}
 	ORDER BY p.`post_date` DESC
   </select>
+	
+	<!-- 不包含文章内容的结果集2 -->
+   <resultMap type="com.blog.pojo.PostsWithBLOBs" id="selectBySlugWithTermsNotContentResultMap" extends="BaseResultMap">
+  	<result column="post_excerpt" property="postExcerpt"/>
+  	<result column="post_title" property="postTitle"/>
+  	<collection property="term" ofType="com.blog.pojo.Terms" select="com.blog.mapper.TermsMapper.getTeamsByPostsId" column="ID">
+  	</collection>
+  </resultMap>
   
   <!-- List<PostsWithBLOBs> getArticlesWithTermsForSearch(@Param("postStatus")String postStatus, @Param("key")String key) -->
   <select id="getArticlesWithTermsForSearch" resultMap="selectArticlesWithTermsNotContentResultMap">
