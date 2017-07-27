@@ -17,7 +17,7 @@ public class SendMailUtil {
 	  
 	  public void sendEmail(String to,String text) {
 		try {
-			simpleMailMessage.setSubject("Blog小组欢迎您使用博客");
+			simpleMailMessage.setSubject("欢迎您使用博客");
 			simpleMailMessage.setTo(to);
 			simpleMailMessage.setText("您的新密码为:"+text+";请您及时登录博客修改原始密码!");
 			mailSender.send(simpleMailMessage);
