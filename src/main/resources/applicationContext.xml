@@ -137,6 +137,8 @@
 			<cache:cacheable method="getArticleByPostsIdWithTerms" />
 			<cache:cacheable method="getArticleByPostsId" />
 			<cache:cacheable method="getArticles" />
+			<cache:cache-evict method="saveArticleWithTerms" all-entries="true" />
+			<cache:cache-evict method="saveArticle" all-entries="true" />
 			<cache:cache-evict method="updateArticle" all-entries="true" />
 			<cache:cache-evict method="batchDeleteArticles" all-entries="true" />
 		</cache:caching>
