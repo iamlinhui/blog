@@ -103,8 +103,8 @@ $('#exampleModal').on('show.bs.modal', function (event) {
 	$("#recipient-name").val("");
 	$("#exampleModalLabel").val("");
 	$("#userId").attr("value","");
-	$("select :eq(0)").removeProp("selected");
-	$("select :eq(1)").removeProp("selected");
+	$("select :eq(0)").prop("selected",false);
+	$("select :eq(1)").prop("selected",false);
 	//selected="selected"
 	
 	  var button = $(event.relatedTarget);
@@ -119,9 +119,9 @@ $('#exampleModal').on('show.bs.modal', function (event) {
 	  $("#recipient-name").val(nicename);
 	  
 	  if(status==0){
-		  $("select :eq(0)").attr("selected","selected");
+		  $("select :eq(0)").prop("selected",true);
 	  }else{
-		  $("select :eq(1)").attr("selected","selected");
+		  $("select :eq(1)").prop("selected",true);
 	  }
 	  
 	});
