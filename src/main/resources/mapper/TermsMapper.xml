@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.promptness.blog.mapper.TermsMapper">
+    <resultMap id="BaseResultMap" type="cn.promptness.blog.pojo.Terms">
+        <id column="term_id" property="termId" jdbcType="BIGINT"/>
+        <result column="name" property="name" jdbcType="VARCHAR"/>
+        <result column="slug" property="slug" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+    term_id, name, slug
+  </sql>
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long">
+        select
+        <include refid="Base_Column_List"/>
+        from wp_terms
+        where term_id = #{termId,jdbcType=BIGINT}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from wp_terms
+    where term_id = #{termId,jdbcType=BIGINT}
+  </delete>
+    <insert id="insert" parameterType="cn.promptness.blog.pojo.Terms">
+    insert into wp_terms (term_id, name, slug
+      )
+    values (#{termId,jdbcType=BIGINT}, #{name,jdbcType=VARCHAR}, #{slug,jdbcType=VARCHAR}
+      )
+  </insert>
+    <insert id="insertSelective" parameterType="cn.promptness.blog.pojo.Terms" useGeneratedKeys="true"
+            keyProperty="termId">
+        insert into wp_terms
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="termId != null">
+                term_id,
+            </if>
+            <if test="name != null">
+                name,
+            </if>
+            <if test="slug != null">
+                slug,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="termId != null">
+                #{termId,jdbcType=BIGINT},
+            </if>
+            <if test="name != null">
+                #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="slug != null">
+                #{slug,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="updateByPrimaryKeySelective" parameterType="cn.promptness.blog.pojo.Terms">
+        update wp_terms
+        <set>
+            <if test="name != null">
+                name = #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="slug != null">
+                slug = #{slug,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where term_id = #{termId,jdbcType=BIGINT}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="cn.promptness.blog.pojo.Terms">
+    update wp_terms
+    set name = #{name,jdbcType=VARCHAR},
+      slug = #{slug,jdbcType=VARCHAR}
+    where term_id = #{termId,jdbcType=BIGINT}
+  </update>
+
+    <!-- void bathSaveTerms(@Param("termsId")List<Integer> termsId, @Param("postsId")Long postsId); -->
+    <insert id="bathSaveTerms">
+        insert into `wp_term_relationships`
+        (`object_id`,
+        `term_taxonomy_id`
+        )
+        values
+        <foreach collection="termsId" separator="," item="termId">
+            (#{postsId},#{termId})
+        </foreach>
+    </insert>
+
+
+    <!-- void deleteRelationship(@Param("postId")Long id); -->
+    <delete id="deleteRelationship">
+  	DELETE 
+	FROM
+	  `wp_term_relationships` 
+	WHERE `object_id` = #{postId}
+  </delete>
+
+    <!-- void updateTermsOrderByTermsId(@Param("termId")Long termId,@Param("termOrder") Long termOrder); -->
+    <update id="updateTermsOrderByTermsId">
+  	UPDATE 
+	 `wp_terms` 
+	SET
+	  `term_order` = #{termOrder} 
+	WHERE `term_id` = #{termId}
+  </update>
+
+    <!-- long selectTermsOrderByTermsId(@Param("termsId")long termsId);-->
+    <select id="selectTermsOrderByTermsId" resultType="long">
+	 SELECT 
+	  `term_order` 
+	FROM
+	  `wp_terms` 
+	WHERE `term_id`=#{termsId}
+  </select>
+
+    <!-- long selectUpTargetTermsId(@Param("termsOrder")long termsOrder); -->
+    <select id="selectUpTargetTermsId" resultType="long">
+	  	SELECT 
+		  `term_id` 
+		FROM
+		  `wp_terms` 
+		WHERE `term_order` = 
+		  (SELECT 
+		    MAX(DISTINCT `term_order`) 
+		  FROM
+		    `wp_terms` 
+		  WHERE `term_order` &lt; #{termsOrder})
+  </select>
+
+    <!-- long selectDownTargetTermsId(@Param("termsOrder")long termsOrder); -->
+    <select id="selectDownTargetTermsId" resultType="long">
+  		SELECT 
+		  `term_id` 
+		FROM
+		  `wp_terms` 
+		WHERE `term_order` = 
+		  (SELECT 
+		    MIN(DISTINCT `term_order`) 
+		  FROM
+		    `wp_terms` 
+		  WHERE `term_order` &gt; #{termsOrder})
+  </select>
+
+    <!-- 	String geNameBySlug(@Param("slug")String slug); -->
+    <select id="geNameBySlug" resultType="string">
+  	SELECT 
+	  `name`
+	FROM
+	  `wp_terms` 
+	WHERE `slug`=#{slug}
+  </select>
+    <!-- List<Terms> getTeamsByPostsId(long postsId); -->
+    <select id="getTeamsByPostsId" resultType="cn.promptness.blog.pojo.Terms">
+  	SELECT t.`name`,
+			t.`slug`,
+			t.`term_id` 
+			FROM`wp_terms` t
+			LEFT JOIN `wp_term_relationships` r
+			ON t.`term_id`=r.`term_taxonomy_id`
+		WHERE r.`object_id`=#{id}
+  </select>
+    <select id="listTerms" resultType="cn.promptness.blog.pojo.Terms">
+        select <include refid="Base_Column_List"/> from wp_terms order by term_order ASC
+    </select>
+
+</mapper>

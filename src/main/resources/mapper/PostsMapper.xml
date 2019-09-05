@@ -1,0 +1,266 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.promptness.blog.mapper.PostsMapper" >
+  <resultMap id="BaseResultMap" type="cn.promptness.blog.pojo.Posts" >
+    <id column="ID" property="id" jdbcType="BIGINT" />
+    <result column="post_author" property="postAuthor" jdbcType="BIGINT" />
+    <result column="post_date" property="postDate" jdbcType="TIMESTAMP" />
+    <result column="post_status" property="postStatus" jdbcType="VARCHAR" />
+    <result column="comment_status" property="commentStatus" jdbcType="VARCHAR" />
+    <result column="post_name" property="postName" jdbcType="VARCHAR" />
+    <result column="comment_count" property="commentCount" jdbcType="BIGINT" />
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="cn.promptness.blog.pojo.Posts" extends="BaseResultMap" >
+    <result column="post_content" property="postContent" jdbcType="LONGVARCHAR" />
+    <result column="post_title" property="postTitle" jdbcType="LONGVARCHAR" />
+    <result column="post_excerpt" property="postExcerpt" jdbcType="LONGVARCHAR" />
+  </resultMap>
+
+
+
+    <sql id="Base_Column_List">
+        ID, post_author, post_date, post_status, comment_status, post_name, comment_count,post_content, post_title, post_excerpt
+    </sql>
+
+    <sql id="without_post_content">
+        ID, post_author, post_date, post_status, comment_status, post_name, comment_count, post_title, post_excerpt
+    </sql>
+
+  <insert id="insertSelective" parameterType="cn.promptness.blog.pojo.Posts" useGeneratedKeys="true" keyProperty="id">
+    insert into wp_posts
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        ID,
+      </if>
+      <if test="postAuthor != null" >
+        post_author,
+      </if>
+      <if test="postDate != null" >
+        post_date,
+      </if>
+      <if test="postStatus != null" >
+        post_status,
+      </if>
+      <if test="commentStatus != null" >
+        comment_status,
+      </if>
+      <if test="postName != null" >
+        post_name,
+      </if>
+      <if test="commentCount != null" >
+        comment_count,
+      </if>
+      <if test="postContent != null" >
+        post_content,
+      </if>
+      <if test="postTitle != null" >
+        post_title,
+      </if>
+      <if test="postExcerpt != null" >
+        post_excerpt,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="postAuthor != null" >
+        #{postAuthor,jdbcType=BIGINT},
+      </if>
+      <if test="postDate != null" >
+        #{postDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="postStatus != null" >
+        #{postStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="commentStatus != null" >
+        #{commentStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="postName != null" >
+        #{postName,jdbcType=VARCHAR},
+      </if>
+      <if test="commentCount != null" >
+        #{commentCount,jdbcType=BIGINT},
+      </if>
+      <if test="postContent != null" >
+        #{postContent,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="postTitle != null" >
+        #{postTitle,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="postExcerpt != null" >
+        #{postExcerpt,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+
+  <update id="updateByPrimaryKeySelective" parameterType="cn.promptness.blog.pojo.Posts" >
+    update wp_posts
+    <set >
+      <if test="postAuthor != null" >
+        post_author = #{postAuthor,jdbcType=BIGINT},
+      </if>
+      <if test="postDate != null" >
+        post_date = #{postDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="postStatus != null" >
+        post_status = #{postStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="commentStatus != null" >
+        comment_status = #{commentStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="postName != null" >
+        post_name = #{postName,jdbcType=VARCHAR},
+      </if>
+      <if test="commentCount != null" >
+        comment_count = #{commentCount,jdbcType=BIGINT},
+      </if>
+      <if test="postContent != null" >
+        post_content = #{postContent,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="postTitle != null" >
+        post_title = #{postTitle,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="postExcerpt != null" >
+        post_excerpt = #{postExcerpt,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=BIGINT}
+  </update>
+
+  <!-- void batchDeleteArticles(@Param("deleteId")List<Integer> deleteId); -->
+  <delete id="batchDeletePosts">
+  	DELETE
+	FROM `wp_posts`
+	WHERE `ID` IN
+	<foreach collection="deleteId" open="(" close=")" separator="," item="id">
+		#{id}
+	</foreach>
+  </delete>
+
+
+
+  <!-- 包含文章内容的结果集 -->
+  <resultMap type="cn.promptness.blog.pojo.Posts" id="selectArticlesWithTermsResultMap" extends="BaseResultMap">
+  	<result column="post_content" property="postContent"/>
+  	<result column="post_excerpt" property="postExcerpt"/>
+  	<result column="post_title" property="postTitle"/>
+  	<collection property="term" ofType="cn.promptness.blog.pojo.Terms">
+  		<id column="term_id" property="termId"/>
+	  	<result column="name" property="name"/>
+	  	<result column="slug" property="slug"/>
+  	</collection>
+  </resultMap>
+
+  <!-- 不包含文章内容的结果集 -->
+   <resultMap type="cn.promptness.blog.pojo.Posts" id="selectArticlesWithTermsNotContentResultMap" extends="BaseResultMap">
+  	<result column="post_excerpt" property="postExcerpt"/>
+  	<result column="post_title" property="postTitle"/>
+  	<collection property="term" ofType="cn.promptness.blog.pojo.Terms">
+  		<id column="term_id" property="termId"/>
+	  	<result column="name" property="name"/>
+	  	<result column="slug" property="slug"/>
+  	</collection>
+  </resultMap>
+
+
+
+  <!-- List<PostsWithBLOBs> getArticlesWithTermsBySlug(@Param("slug")String slug,@Param("postStatus") String postStatus); -->
+  <select id="getPostsWithTermsBySlug" resultMap="selectArticlesWithTermsNotContentResultMap">
+  	SELECT 
+	  p.`ID`,
+	  p.`post_author`,
+	  p.`post_date`,
+	  p.`post_excerpt`,
+	  p.`post_name`,
+	  p.`post_status`,
+	  p.`post_title`,
+	  p.`comment_count`,
+	  p.`comment_status`,
+	  t.`term_id`,
+	  t.`name`,
+	  t.`slug` 
+	FROM
+	  `wp_terms` t
+	  LEFT JOIN `wp_term_relationships` r
+	    ON t.`term_id` = r.`term_taxonomy_id`
+	  LEFT JOIN `wp_posts` p
+	    ON r.`object_id` = p.`ID`
+	WHERE t.`slug` = #{slug} AND p.`post_status`=#{postStatus}
+	ORDER BY p.`post_date` DESC
+  </select>
+
+	<!-- 不包含文章内容的结果集2 -->
+   <resultMap type="cn.promptness.blog.pojo.Posts" id="selectBySlugWithTermsNotContentResultMap" extends="BaseResultMap">
+  	<result column="post_excerpt" property="postExcerpt"/>
+  	<result column="post_title" property="postTitle"/>
+  	<collection property="term" ofType="cn.promptness.blog.pojo.Terms" select="cn.promptness.blog.mapper.TermsMapper.getTeamsByPostsId" column="ID">
+  	</collection>
+  </resultMap>
+
+  <!-- List<PostsWithBLOBs> getArticlesWithTermsForSearch(@Param("postStatus")String postStatus, @Param("key")String key) -->
+  <select id="getPostsWithTermsForSearch" resultMap="selectArticlesWithTermsNotContentResultMap">
+  	SELECT p.`ID`,
+		p.`post_author`,
+		p.`post_date`,
+		p.`post_excerpt`,
+		p.`post_name`,
+		p.`post_status`,
+		p.`post_title`,
+		p.`comment_status`,
+		p.`comment_count`,
+		t.`term_id`,
+		t.`name`,
+		t.`slug`
+	FROM `wp_posts` p
+	LEFT JOIN `wp_term_relationships` r
+	ON p.`ID`=r.`object_id`
+	LEFT JOIN `wp_terms` t
+	ON t.`term_id`=r.`term_taxonomy_id`
+	WHERE p.`post_title` LIKE concat('%', #{key}, '%')
+	<if test="postStatus!=null">AND p.`post_status`=#{postStatus}</if>
+	ORDER BY p.`post_date` DESC
+  </select>
+    <select id="listPostsByStatusWithoutTerms" resultMap="ResultMapWithBLOBs">
+        SELECT <include refid="Base_Column_List"/> FROM wp_posts
+        WHERE true
+        <if test="postStatus!=null">AND `post_status`=#{postStatus}</if>
+        ORDER BY `post_date` DESC
+    </select>
+    <select id="getPostsWithoutTerms" resultMap="ResultMapWithBLOBs">
+        SELECT <include refid="Base_Column_List"/> FROM wp_posts
+        WHERE true
+        <if test="postId != null">AND ID=#{postId}</if>
+        <if test="postStatus != null">AND `post_status`=#{postStatus}</if>
+        ORDER BY `post_date` DESC
+    </select>
+
+    <select id="getPostsByPostsIdWithTermsAndContent" resultMap="selectArticlesWithTermsResultMap">
+        SELECT p.`ID`,
+		p.`post_author`,
+		p.`post_content`,
+		p.`post_date`,
+		p.`post_excerpt`,
+		p.`post_name`,
+		p.`post_status`,
+		p.`post_title`,
+		p.`comment_count`,
+		p.`comment_status`,
+		t.`term_id`,
+		t.`name`,
+		t.`slug`
+		FROM `wp_posts` p
+		LEFT JOIN `wp_term_relationships` r
+		ON p.`ID`=r.`object_id`
+		LEFT JOIN `wp_terms` t
+		ON t.`term_id`=r.`term_taxonomy_id`
+		WHERE p.`ID`=#{postId}
+		ORDER BY p.`post_date` DESC
+    </select>
+    <select id="listPostsWithTermsWithoutContent" resultMap="selectBySlugWithTermsNotContentResultMap">
+        SELECT <include refid="without_post_content"/> FROM wp_posts as p
+        WHERE true
+        <if test="postStatus!=null">and p.`post_status`=#{postStatus}</if>
+        ORDER BY p.`post_date` DESC
+    </select>
+</mapper>
