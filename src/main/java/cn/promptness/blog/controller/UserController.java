@@ -117,7 +117,7 @@ public class UserController {
     public String forget(@Validated(value = {AccountVO.Forget.class}) AccountVO account) throws Exception {
 
         boolean emailIsExist = userService.emailIsExist(account.getEmail());
-        AssertUtils.isFalse(emailIsExist, BizExceptionEnum.FORGET_EMAIL_EXIST);
+        AssertUtils.isTrue(emailIsExist, BizExceptionEnum.FORGET_EMAIL_NOT_EXIST);
 
         String sendPassword = HashUtils.getRandomSalt(8);
         sendMailRpc.sendMail(account.getEmail(), "重置密码", sendPassword);
@@ -131,8 +131,7 @@ public class UserController {
      */
     @GetMapping(value = "/logout")
     public String logout() {
-        HttpSession session = HttpUtils.getRequest().getSession();
-        session.invalidate();
+        HttpUtils.getSession().invalidate();
         return "redirect:/";
     }
 
@@ -158,10 +157,13 @@ public class UserController {
         //修改昵称
         if (!StringUtils.isEmpty(userNiceName)) {
             userService.updateUserNiceNameById(user.getId(), userNiceName);
+            user.setUserNicename(userNiceName);
         }
         //修改密码
         if (!StringUtils.isEmpty(password)) {
             userService.updateUserPasswordById(user.getId(), HashUtils.md5(password));
+            HttpUtils.getSession().invalidate();
+            return "redirect:/";
         }
 
         return "redirect:/user";

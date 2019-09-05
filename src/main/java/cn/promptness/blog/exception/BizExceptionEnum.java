@@ -17,7 +17,7 @@ public enum BizExceptionEnum {
     REGISTER_USER_NAME_EXIST (100002, "用户名已经存在",             "page/register"),
     REGISTER_EMAIL_EXIST     (100002, "邮箱已经存在",               "page/register"),
     FORGET_EMAIL_ERROR       (100002, "邮箱格式不正确",             "page/forget"),
-    FORGET_EMAIL_EXIST       (100002, "邮箱已经存在",               "page/forget"),
+    FORGET_EMAIL_NOT_EXIST   (100002, "邮箱不存在",                 "page/forget"),
     FORGET_CODE_ERROR        (100003, "验证码错误",                 "page/register"),
     USER_NOT_LOGIN           (100100, "请先登录账号!",              "page/login"),
     FROZEN_ACCOUNT           (100004, "账号已冻结!",                "page/login"),
