@@ -8,6 +8,7 @@
 	<%@include file="/WEB-INF/templates/common/base.jsp"%>
 	<link href="static/css/signin.css" rel="stylesheet" type="text/css" />
 	<link href="static/css/offcanvas.css" rel="stylesheet" type="text/css" />
+	<link href="static/editor/css/editormd.css" rel="stylesheet" type="text/css"/>
 	<script src="static/editor/lib/marked.min.js"></script>
 	<script src="static/editor/lib/prettify.min.js"></script>
 	<script src="static/editor/lib/raphael.min.js"></script>
