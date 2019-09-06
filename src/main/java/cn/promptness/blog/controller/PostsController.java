@@ -51,6 +51,14 @@ public class PostsController {
     /**
      * 到站点首页
      */
+    @GetMapping("/posts")
+    public String forPage(Model model) {
+        return forPage(model, 1);
+    }
+    
+    /**
+     * 到站点首页
+     */
     @GetMapping("/posts/{pageNum:.+}")
     public String forPage(Model model, @PathVariable Integer pageNum) {
         PageInfo<Posts> recently = postsService.getArticlesWithTerms(PostStatusEnum.PUBLISH.getText(), 1, 10, 8);

@@ -263,4 +263,26 @@
         <if test="postStatus!=null">and p.`post_status`=#{postStatus}</if>
         ORDER BY p.`post_date` DESC
     </select>
+    <select id="getPostsWithTermsForSearchV2" resultMap="selectArticlesWithTermsNotContentResultMap">
+        SELECT p.`ID`,
+        p.`post_author`,
+        p.`post_date`,
+        p.`post_excerpt`,
+        p.`post_name`,
+        p.`post_status`,
+        p.`post_title`,
+        p.`comment_status`,
+        p.`comment_count`,
+        t.`term_id`,
+        t.`name`,
+        t.`slug`
+        FROM `wp_posts` p
+        LEFT JOIN `wp_term_relationships` r
+        ON p.`ID`=r.`object_id`
+        LEFT JOIN `wp_terms` t
+        ON t.`term_id`=r.`term_taxonomy_id`
+        WHERE p.`post_title` MATCH (`post_content`) AGAINST(#{key})
+        <if test="postStatus!=null">AND p.`post_status`=#{postStatus}</if>
+        ORDER BY p.`post_date` DESC
+    </select>
 </mapper>

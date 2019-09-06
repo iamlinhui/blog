@@ -24,4 +24,6 @@ public interface PostsMapper {
     Posts getPostsByPostsIdWithTermsAndContent(@Param("postId") Integer postId);
 
     List<Posts> listPostsWithTermsWithoutContent(@Param("postStatus") String postStatus);
+
+    List<Posts> getPostsWithTermsForSearchV2(@Param("postStatus") String postStatus, @Param("key") String key);
 }

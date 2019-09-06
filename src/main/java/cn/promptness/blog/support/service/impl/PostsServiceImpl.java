@@ -114,7 +114,7 @@ public class PostsServiceImpl implements PostsService {
 
     @Override
     public PageInfo<Posts> getArticlesWithTermsForSearch(String postStatus, String key) {
-        List<Posts> withTerms = postsMapper.getPostsWithTermsForSearch(postStatus, key);
+        List<Posts> withTerms = postsMapper.getPostsWithTermsForSearchV2(postStatus, key);
         return new PageInfo<>(withTerms);
     }
 
