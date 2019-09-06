@@ -2,8 +2,8 @@ package cn.promptness.blog.support.interceptor;
 
 import cn.promptness.blog.exception.BizExceptionEnum;
 import cn.promptness.blog.pojo.Users;
-import cn.promptness.blog.support.utils.AssertUtils;
-import cn.promptness.blog.support.utils.BindUtils;
+import cn.promptness.blog.common.utils.AssertUtils;
+import cn.promptness.blog.common.utils.BindUtils;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 import org.springframework.web.servlet.resource.DefaultServletHttpRequestHandler;
 

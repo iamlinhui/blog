@@ -1,6 +1,6 @@
 package cn.promptness.blog.exception;
 
-import cn.promptness.blog.support.vo.HttpResult;
+import cn.promptness.blog.vo.HttpResult;
 import com.google.gson.Gson;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

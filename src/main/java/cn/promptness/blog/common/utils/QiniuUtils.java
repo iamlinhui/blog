@@ -1,4 +1,4 @@
-package cn.promptness.blog.support.utils;
+package cn.promptness.blog.common.utils;
 
 import cn.promptness.blog.config.properties.QiniuProperties;
 import com.qiniu.common.QiniuException;

@@ -1,4 +1,4 @@
-package cn.promptness.blog.support.vo;
+package cn.promptness.blog.vo;
 
 import lombok.Data;
 

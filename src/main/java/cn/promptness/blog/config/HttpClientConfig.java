@@ -1,7 +1,7 @@
 package cn.promptness.blog.config;
 
 import cn.promptness.blog.config.properties.HttpClientProperties;
-import cn.promptness.blog.support.utils.HttpClientUtils;
+import cn.promptness.blog.common.utils.HttpClientUtils;
 import com.google.common.collect.ImmutableList;
 import org.apache.http.client.config.AuthSchemes;
 import org.apache.http.client.config.CookieSpecs;

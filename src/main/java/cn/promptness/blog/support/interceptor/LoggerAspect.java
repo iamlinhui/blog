@@ -1,6 +1,6 @@
 package cn.promptness.blog.support.interceptor;
 
-import cn.promptness.blog.support.utils.HttpUtils;
+import cn.promptness.blog.common.utils.HttpUtils;
 import com.google.common.collect.Lists;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;

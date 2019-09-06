@@ -1,7 +1,7 @@
 package cn.promptness.blog.support.service;
 
 import cn.promptness.blog.pojo.Posts;
-import cn.promptness.blog.support.vo.PostsVO;
+import cn.promptness.blog.vo.PostsVO;
 import com.github.pagehelper.PageInfo;
 
 import java.util.List;

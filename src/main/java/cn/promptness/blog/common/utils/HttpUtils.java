@@ -1,4 +1,4 @@
-package cn.promptness.blog.support.utils;
+package cn.promptness.blog.common.utils;
 
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;

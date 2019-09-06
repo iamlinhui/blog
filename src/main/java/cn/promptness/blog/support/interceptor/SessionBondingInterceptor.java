@@ -2,7 +2,7 @@ package cn.promptness.blog.support.interceptor;
 
 import cn.promptness.blog.common.constant.Constants;
 import cn.promptness.blog.pojo.Users;
-import cn.promptness.blog.support.utils.BindUtils;
+import cn.promptness.blog.common.utils.BindUtils;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 

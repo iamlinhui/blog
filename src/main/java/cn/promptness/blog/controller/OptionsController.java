@@ -1,7 +1,7 @@
 package cn.promptness.blog.controller;
 
 import cn.promptness.blog.support.service.OptionsService;
-import cn.promptness.blog.support.utils.HttpUtils;
+import cn.promptness.blog.common.utils.HttpUtils;
 import com.google.common.collect.Maps;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.CollectionUtils;

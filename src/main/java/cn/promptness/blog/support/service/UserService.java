@@ -1,7 +1,7 @@
 package cn.promptness.blog.support.service;
 
 import cn.promptness.blog.pojo.Users;
-import cn.promptness.blog.support.vo.AccountVO;
+import cn.promptness.blog.vo.AccountVO;
 
 import java.util.List;
 

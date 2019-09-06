@@ -1,4 +1,4 @@
-package cn.promptness.blog.support.utils;
+package cn.promptness.blog.common.utils;
 
 import cn.promptness.blog.exception.BizExceptionEnum;
 

@@ -7,8 +7,8 @@ import cn.promptness.blog.pojo.Posts;
 import cn.promptness.blog.support.service.PostsService;
 import cn.promptness.blog.support.service.TermsService;
 import cn.promptness.blog.support.service.rpc.WeatherRpc;
-import cn.promptness.blog.support.utils.AssertUtils;
-import cn.promptness.blog.support.utils.HttpUtils;
+import cn.promptness.blog.common.utils.AssertUtils;
+import cn.promptness.blog.common.utils.HttpUtils;
 import com.github.pagehelper.PageInfo;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -55,7 +55,7 @@ public class PostsController {
     public String forPage(Model model) {
         return forPage(model, 1);
     }
-    
+
     /**
      * 到站点首页
      */

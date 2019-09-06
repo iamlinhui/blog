@@ -1,6 +1,6 @@
-package cn.promptness.blog.support.utils;
+package cn.promptness.blog.common.utils;
 
-import cn.promptness.blog.support.vo.HttpResult;
+import cn.promptness.blog.vo.HttpResult;
 import com.alibaba.fastjson.JSON;
 import org.apache.http.Header;
 import org.apache.http.HttpStatus;

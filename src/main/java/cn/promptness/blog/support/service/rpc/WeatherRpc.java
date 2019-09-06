@@ -2,8 +2,8 @@ package cn.promptness.blog.support.service.rpc;
 
 import cn.promptness.blog.common.constant.Constants;
 import cn.promptness.blog.support.service.OptionsService;
-import cn.promptness.blog.support.utils.HttpClientUtils;
-import cn.promptness.blog.support.vo.HttpResult;
+import cn.promptness.blog.common.utils.HttpClientUtils;
+import cn.promptness.blog.vo.HttpResult;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 import org.apache.http.message.BasicHeader;
