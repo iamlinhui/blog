@@ -20,7 +20,7 @@
           <ul class="nav navbar-nav">
 	          <form class="navbar-form" action="search" method="post">
 	            <div class="form-group">
-	              <input value="${key }" autocomplete="off"  name="key" type="text" placeholder="标题名" class="form-control" required/>
+	              <input value="${key }" autocomplete="off"  name="key" type="text" placeholder="关键词" class="form-control" required/>
 	            </div>
 	            <button type="submit" class="btn btn-success">
 	           		<span class="glyphicon glyphicon-search" aria-hidden="true">搜索</span>
