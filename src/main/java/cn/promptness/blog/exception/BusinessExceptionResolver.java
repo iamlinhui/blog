@@ -59,10 +59,15 @@ public class BusinessExceptionResolver implements HandlerExceptionResolver, Orde
     }
 
     private boolean isJson(Object handler) {
-        HandlerMethod handlerMethod = (HandlerMethod) handler;
-        ResponseBody responseBody = handlerMethod.getMethodAnnotation(ResponseBody.class);
-        RestController restController = handlerMethod.getBeanType().getAnnotation(RestController.class);
-        return responseBody != null || restController != null;
+        // handler处理器  org.springframework.web.method.HandlerMethod
+        if (handler instanceof HandlerMethod) {
+            HandlerMethod handlerMethod = (HandlerMethod) handler;
+            ResponseBody responseBody = handlerMethod.getMethodAnnotation(ResponseBody.class);
+            RestController restController = handlerMethod.getBeanType().getAnnotation(RestController.class);
+            return responseBody != null || restController != null;
+        }
+        //org.springframework.web.servlet.resource.ResourceHttpRequestHandler 静态资源处理器
+        return false;
     }
 
     @Override
