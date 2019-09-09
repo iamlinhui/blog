@@ -12,7 +12,7 @@ RUN ln -snf /usr/share/zoneinfo/$TIME_ZONE /etc/localtime && echo $TIME_ZONE > /
 ENV SERVER_PORT 8080
 EXPOSE $SERVER_PORT
 
-ADD target/blog-*.war /blog.war
+ADD target/blog-*.war /home/app/blog.war
 
 ENV APOLLO="-Denv=dev \
             -Dapollo.meta=http://apollo-host:port \
@@ -33,4 +33,4 @@ ENV OPTION="-Dnetworkaddress.cache.ttl=600 \
 ENV VIRTUAL="-XX:+UseG1GC \
              -XX:MaxGCPauseMillis=200"
 
-ENTRYPOINT ["sh","-c","java -server -d64 $VIRTUAL $APOLLO $OPTION -jar /blog.war"]
+ENTRYPOINT ["sh","-c","java -server -d64 $VIRTUAL $APOLLO $OPTION -jar /home/app/blog.war"]
