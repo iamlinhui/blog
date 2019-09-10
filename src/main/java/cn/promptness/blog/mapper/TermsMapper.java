@@ -38,4 +38,6 @@ public interface TermsMapper {
     List<Terms> getTeamsByPostsId(long postsId);
 
     List<Terms> listTerms();
+
+    int deleteRelationshipByTermId(long termId);
 }

@@ -12,7 +12,7 @@ public interface TermsService {
 
 	void updateTerms(Terms terms);
 
-	void deleteTermsById(long parse);
+	void deleteTermsById(long termId);
 
 	void upTerms(long parse);
 

@@ -92,6 +92,12 @@
 	  `wp_term_relationships` 
 	WHERE `object_id` = #{postId}
   </delete>
+    <delete id="deleteRelationshipByTermId">
+    DELETE
+	FROM
+	  `wp_term_relationships`
+	WHERE `term_taxonomy_id` = #{termId}
+    </delete>
 
     <!-- void updateTermsOrderByTermsId(@Param("termId")Long termId,@Param("termOrder") Long termOrder); -->
     <update id="updateTermsOrderByTermsId">

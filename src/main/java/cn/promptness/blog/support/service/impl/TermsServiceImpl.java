@@ -42,8 +42,9 @@ public class TermsServiceImpl implements TermsService {
     @Transactional(rollbackFor = Exception.class)
     @CacheEvict(value = "termsCache", allEntries = true)
     @Override
-    public void deleteTermsById(long parseInt) {
-        termsMapper.deleteByPrimaryKey(parseInt);
+    public void deleteTermsById(long termId) {
+        termsMapper.deleteByPrimaryKey(termId);
+        termsMapper.deleteRelationshipByTermId(termId);
     }
 
     @Transactional(rollbackFor = Exception.class)
