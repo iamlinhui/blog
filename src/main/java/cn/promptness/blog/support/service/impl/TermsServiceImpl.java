@@ -33,7 +33,7 @@ public class TermsServiceImpl implements TermsService {
     }
 
     @Transactional(rollbackFor = Exception.class)
-    @CacheEvict(value = "termsCache", allEntries = true)
+    @CacheEvict(value = {"termsCache", "postsCache"}, allEntries = true)
     @Override
     public void updateTerms(Terms terms) {
         termsMapper.updateByPrimaryKeySelective(terms);
