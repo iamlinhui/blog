@@ -12,8 +12,8 @@ import org.springframework.stereotype.Component;
 
 import java.io.File;
 import java.time.Instant;
-import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * @author : Lynn
@@ -24,7 +24,7 @@ public class QiniuUtils {
 
     private Logger logger = LoggerFactory.getLogger(QiniuUtils.class);
 
-    private static final Map<String, Object> CACHE_MAP = new HashMap<>();
+    private static final Map<String, Object> CACHE_MAP = new ConcurrentHashMap<>();
 
     @Autowired
     private QiniuProperties qiniuProperties;
