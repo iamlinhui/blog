@@ -29,7 +29,7 @@ CREATE TABLE `wp_options` (
 -- ----------------------------
 INSERT INTO `wp_options` VALUES ('1', 'title', '林省之');
 INSERT INTO `wp_options` VALUES ('2', 'subtitle', '生活不止眼前的苟且');
-INSERT INTO `wp_options` VALUES ('3', 'logoPath', 'favicon.ico');
+INSERT INTO `wp_options` VALUES ('3', 'logoPath', 'static/img/favicon.ico');
 INSERT INTO `wp_options` VALUES ('4', 'userStatus', '0');
 INSERT INTO `wp_options` VALUES ('5', 'commentId', '');
 INSERT INTO `wp_options` VALUES ('6', 'appcode', '');
