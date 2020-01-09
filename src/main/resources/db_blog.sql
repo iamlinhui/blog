@@ -51,7 +51,7 @@ CREATE TABLE `wp_posts` (
   `comment_count` bigint(20) NOT NULL DEFAULT '0',
   PRIMARY KEY (`ID`),
   KEY `post_author` (`post_author`),
-  KEY `type_status_date` (`post_status`,`post_date`,`ID`),
+  KEY `type_status_date` (`post_status`,`post_date`,`ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 ALTER TABLE wp_posts ADD FULLTEXT INDEX full_idx_post (`post_title`,`post_excerpt`,`post_content`) WITH PARSER ngram;
