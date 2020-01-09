@@ -73,7 +73,7 @@
             <select id="form-control" name="userStatus" class="form-control">
 			  <option value="0" >管理员</option>
 			  <option value="1" >普通用户</option>
-			  <option value="3" >冻结用户</option>
+			  <option value="2" >冻结用户</option>
 			</select>
           </div>
 	      <div class="modal-footer">
@@ -94,6 +94,7 @@ $('#exampleModal').on('show.bs.modal', function (event) {
 	$("#userId").attr("value","");
 	$("select :eq(0)").prop("selected",false);
 	$("select :eq(1)").prop("selected",false);
+	$("select :eq(2)").prop("selected",false);
 
 	  var button = $(event.relatedTarget);
 	  var userid = button.data('userid');
@@ -108,8 +109,10 @@ $('#exampleModal').on('show.bs.modal', function (event) {
 	  
 	  if(status===0){
 		  $("select :eq(0)").prop("selected",true);
-	  }else{
+	  }else if (status===1){
 		  $("select :eq(1)").prop("selected",true);
+	  }else if (status===2){
+		  $("select :eq(2)").prop("selected",true);
 	  }
 	  
 	});
