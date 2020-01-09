@@ -1,6 +1,9 @@
 package cn.promptness.blog.controller;
 
 import cn.promptness.blog.common.constant.Constants;
+import cn.promptness.blog.common.utils.AssertUtils;
+import cn.promptness.blog.common.utils.QiniuUtils;
+import cn.promptness.blog.common.utils.SnowflakeIdUtils;
 import cn.promptness.blog.config.properties.QiniuProperties;
 import cn.promptness.blog.exception.BizExceptionEnum;
 import cn.promptness.blog.pojo.Posts;
@@ -9,9 +12,6 @@ import cn.promptness.blog.pojo.Users;
 import cn.promptness.blog.support.service.PostsService;
 import cn.promptness.blog.support.service.TermsService;
 import cn.promptness.blog.support.service.UserService;
-import cn.promptness.blog.common.utils.AssertUtils;
-import cn.promptness.blog.common.utils.QiniuUtils;
-import cn.promptness.blog.common.utils.SnowflakeIdUtils;
 import cn.promptness.blog.vo.PostsVO;
 import cn.promptness.blog.vo.UploadVO;
 import com.github.pagehelper.PageInfo;
@@ -20,6 +20,7 @@ import org.apache.commons.io.IOUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.CollectionUtils;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -127,6 +128,9 @@ public class AdminController {
         List<Integer> deleteIdList = posts.getDelete();
         if (!CollectionUtils.isEmpty(deleteIdList)) {
             postsService.batchDeleteArticles(deleteIdList);
+        }
+        if (StringUtils.isEmpty(posts.getPageNum())) {
+            return "redirect:/admin/article";
         }
         return "redirect:/admin/article/" + posts.getPageNum();
     }

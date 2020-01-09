@@ -61,8 +61,8 @@ public class PostsController {
      */
     @GetMapping("/posts/{pageNum:.+}")
     public String forPage(Model model, @PathVariable Integer pageNum) {
-        PageInfo<Posts> recently = postsService.getArticlesWithTerms(PostStatusEnum.PUBLISH.getText(), 1, 10, 8);
-        PageInfo<Posts> pageInfo = postsService.getArticles(PostStatusEnum.PUBLISH.getText(), pageNum, 1, 8);
+        PageInfo<Posts> recently = postsService.getArticlesWithTerms(PostStatusEnum.PUBLISH.getText(), 1, 10, 5);
+        PageInfo<Posts> pageInfo = postsService.getArticles(PostStatusEnum.PUBLISH.getText(), pageNum, 1, 5);
         model.addAttribute(Constants.PAGE_INFO, pageInfo);
         model.addAttribute(Constants.RECENTLY_ARTICLE, recently);
         return "page/index";
@@ -93,7 +93,7 @@ public class PostsController {
     @GetMapping(value = "/classify/{slug:.+}/{pageNum:.+}")
     public String classifyArticleForPage(@PathVariable String slug, Model model, @PathVariable Integer pageNum) {
 
-        PageInfo<Posts> pageInfo = postsService.getArticlesWithTermsBySlug(PostStatusEnum.PUBLISH.getText(), pageNum, 20, 8, slug);
+        PageInfo<Posts> pageInfo = postsService.getArticlesWithTermsBySlug(PostStatusEnum.PUBLISH.getText(), pageNum, 20, 5, slug);
         model.addAttribute(Constants.PAGE_INFO, pageInfo);
 
         String termName = termsService.getNameBySlug(slug);
@@ -115,7 +115,7 @@ public class PostsController {
         model.addAttribute(Constants.PAGE_INFO, pageInfo);
 
         //最近文章
-        PageInfo<Posts> recently = postsService.getArticlesWithTerms(PostStatusEnum.PUBLISH.getText(), 1, 10, 8);
+        PageInfo<Posts> recently = postsService.getArticlesWithTerms(PostStatusEnum.PUBLISH.getText(), 1, 10, 5);
         model.addAttribute(Constants.RECENTLY_ARTICLE, recently);
 
         return "page/index";

@@ -36,11 +36,12 @@
 				          <td><fmt:formatDate pattern="yyyy年MM月dd日HH:mm:ss" value="${user.userRegistered}"/></td>
 				          <td>
 							  <c:if test="${user.userStatus==0}">管理员</c:if>
-							  <c:if test="${user.userStatus!=0}">普通会员</c:if>
+							  <c:if test="${user.userStatus==1}">普通会员</c:if>
+							  <c:if test="${user.userStatus==2}">已冻结</c:if>
 				          </td>
 				         <td>
 				          	<button type="button" data-status="${user.userStatus }" data-userid="${user.id}" data-nicename="${user.userNicename}" data-loginname="${user.userLogin}" class="btn btn-info btn-sm" data-toggle="modal" data-target="#exampleModal">
-				          	<span class="glyphicon glyphicon-pencil" aria-hidden="true">&nbsp;修改</span>
+				          	<span class="glyphicon glyphicon-pencil" aria-hidden="true">修改</span>
 				          	</button>
 				          </td>
 				        </tr>
@@ -72,6 +73,7 @@
             <select id="form-control" name="userStatus" class="form-control">
 			  <option value="0" >管理员</option>
 			  <option value="1" >普通用户</option>
+			  <option value="3" >冻结用户</option>
 			</select>
           </div>
 	      <div class="modal-footer">
@@ -104,7 +106,7 @@ $('#exampleModal').on('show.bs.modal', function (event) {
 	  $("#userId").attr("value",userid);
 	  $("#recipient-name").val(nicename);
 	  
-	  if(status==0){
+	  if(status===0){
 		  $("select :eq(0)").prop("selected",true);
 	  }else{
 		  $("select :eq(1)").prop("selected",true);
