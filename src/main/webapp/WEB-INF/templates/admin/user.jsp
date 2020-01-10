@@ -102,7 +102,7 @@ $('#exampleModal').on('show.bs.modal', function (event) {
 	  var loginname = button.data('loginname');
 	  var status = button.data('status');
 	  
-	  var modal = $(this)
+	  var modal = $(this);
 	  modal.find('.modal-title').text("修改用户"+loginname+"的信息");
 	  $("#userId").attr("value",userid);
 	  $("#recipient-name").val(nicename);

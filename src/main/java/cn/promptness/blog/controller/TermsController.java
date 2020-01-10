@@ -39,7 +39,6 @@ public class TermsController {
         } else {
             termsService.updateTerms(terms);
         }
-
         return "redirect:/admin/navigation";
     }
 
