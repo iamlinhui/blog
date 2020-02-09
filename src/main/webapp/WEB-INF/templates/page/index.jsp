@@ -20,10 +20,6 @@
 </head>
 <body>
 	<%@include file="/WEB-INF/templates/common/navigation_pages.jsp" %>
-<%--
-	<%@include file="/WEB-INF/templates/common/cursor.jsp" %>
---%>
-
 	<%-- 容器结束 --%>
 	<div class="container">
 		<div class="row row-offcanvas row-offcanvas-right">

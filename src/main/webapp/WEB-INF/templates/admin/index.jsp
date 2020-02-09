@@ -1,7 +1,7 @@
-<%@page import="java.util.Date"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" isErrorPage="true"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@page import="java.util.Date"%>
 <!DOCTYPE html>
 <html lang="zh-cn">
 <head>
@@ -13,8 +13,8 @@
 	<title>${title} - 后台页面</title>
 </head>
 <body background="http://image.promptness.cn/<fmt:formatDate pattern="yyyy-MM-dd" value="<%=new Date()%>"/>.jpg">
-	<div class="site-wrapper">
-		<div class="site-wrapper-inner">
+<div class="site-wrapper">
+	<div class="site-wrapper-inner">
 		<div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
 			<div class="cover-container">
 				<div class="masthead clearfix">
@@ -22,7 +22,7 @@
 						<%@include file="/WEB-INF/templates/common/navigator_admin.jsp"%>
 					</div>
 				</div>
-				
+
 				<div class="inner cover">
 					<h1 style="font-size: 80px; font-family: 楷体;" class="cover-heading">欢迎使用</h1>
 				</div>
@@ -34,5 +34,6 @@
 			</div>
 		</div>
 	</div>
+</div>
 </body>
 </html>

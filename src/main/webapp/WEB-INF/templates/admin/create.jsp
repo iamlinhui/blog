@@ -8,6 +8,7 @@
     <link href="static/css/offcanvas.css" rel="stylesheet" type="text/css"/>
     <link href="static/editor/css/editormd.css" rel="stylesheet" type="text/css"/>
     <script src="static/editor/editormd.js" type="text/javascript"></script>
+    <script src="static/script/continue.js" type="text/javascript"></script>
     <title>${title} - 新建文章</title>
 </head>
 <body>
@@ -18,7 +19,7 @@
         <form action="admin/create" method="post">
             <div class="input-group" style="padding: 10px">
                 <label class="input-group-addon" for="postTitle">文章标题</label>
-                <input id="postTitle" name="postTitle" type="text" class="form-control input-sm" required autofocus />
+                <input id="postTitle" name="postTitle" type="text" class="form-control input-sm" required autofocus/>
             </div>
             <div class="input-group" style="padding: 10px">
                 <label class="input-group-addon" for="postExcerpt">文章简介</label>
@@ -35,7 +36,7 @@
                     <label for="commentOff">否</label>
                 </div>
             </div>
-            <div class="input-group"  style="padding: 10px">
+            <div class="input-group" style="padding: 10px">
                 <label>文章分类:</label>
                 <c:forEach items="${terms}" var="term">
                     <div style="display:inline;padding: 10px">
@@ -56,27 +57,4 @@
 </div>
 <%--巨幕结束 --%>
 </body>
-<script type="text/javascript">
-    $(function () {
-        var editor = editormd("editor", {
-            name: 'postContent',
-            autoWidth: true,
-            height: '900px',
-            syncScrolling: "single",
-            placeholder: '',
-            path: "static/editor/lib/",
-            pluginPath: "static/editor/plugins/",
-            imageUpload: true,
-            imageFormats: ["jpg", "jpeg", "gif", "png", "bmp", "webp"],
-            imageUploadURL: "/admin/upload",
-            taskList: true,
-            htmlDecode: "style,script,iframe|on*",
-            emoji: true,
-            tex: true,
-            flowChart: true,
-            sequenceDiagram: true
-        });
-
-    })
-</script>
 </html>

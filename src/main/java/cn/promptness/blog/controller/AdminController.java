@@ -12,11 +12,14 @@ import cn.promptness.blog.pojo.Users;
 import cn.promptness.blog.support.service.PostsService;
 import cn.promptness.blog.support.service.TermsService;
 import cn.promptness.blog.support.service.UserService;
+import cn.promptness.blog.vo.HttpResult;
 import cn.promptness.blog.vo.PostsVO;
 import cn.promptness.blog.vo.UploadVO;
 import com.github.pagehelper.PageInfo;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.IOUtils;
+import org.springframework.http.RequestEntity;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.CollectionUtils;
@@ -171,4 +174,9 @@ public class AdminController {
         return UploadVO.fail();
     }
 
+    @RequestMapping(value = "/continue", method = RequestMethod.OPTIONS)
+    @ResponseBody
+    public HttpResult continueSession() {
+        return HttpResult.SUCCESS;
+    }
 }

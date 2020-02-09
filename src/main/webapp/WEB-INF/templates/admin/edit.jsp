@@ -8,6 +8,7 @@
 	<link href="static/css/offcanvas.css" rel="stylesheet" type="text/css" />
 	<link href="static/editor/css/editormd.css" rel="stylesheet" type="text/css"/>
 	<script src="static/editor/editormd.js" type="text/javascript"></script>
+	<script src="static/script/continue.js" type="text/javascript"></script>
 	<title>${title } - 编辑文章</title>
 </head>
 <body>
@@ -57,26 +58,4 @@
 	</div>
 	<%--巨幕结束 --%>
 </body>
-<script type="text/javascript">
-	$(function () {
-		var editor = editormd("editor", {
-			name: 'postContent',
-			autoWidth: true,
-			height: '900px',
-			syncScrolling: "single",
-			placeholder: '',
-			path: "static/editor/lib/",
-			pluginPath: "static/editor/plugins/",
-			imageUpload: true,
-			imageFormats: ["jpg", "jpeg", "gif", "png", "bmp", "webp"],
-			imageUploadURL: "/admin/upload",
-			taskList: true,
-			htmlDecode: "style,script,iframe|on*",
-			emoji: true,
-			tex: true,
-			flowChart: true,
-			sequenceDiagram: true
-		});
-	})
-</script>
 </html>
