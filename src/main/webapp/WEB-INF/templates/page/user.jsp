@@ -115,7 +115,7 @@
 $(function(){
 	var hash = md5($("#email").text());
 	console.log(hash);
-	$("img").attr("src","http://www.gravatar.com/avatar/"+hash);
+	$("img").attr("src","https://www.gravatar.com/avatar/"+hash);
     $('#modifyPsw')
     .bootstrapValidator({
         feedbackIcons: {
