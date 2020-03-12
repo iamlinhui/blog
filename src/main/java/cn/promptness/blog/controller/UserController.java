@@ -3,15 +3,15 @@ package cn.promptness.blog.controller;
 
 import cn.promptness.blog.common.constant.Constants;
 import cn.promptness.blog.common.constant.enums.UserStateEnum;
+import cn.promptness.blog.common.utils.AssertUtils;
+import cn.promptness.blog.common.utils.BindUtils;
+import cn.promptness.blog.common.utils.HashUtils;
+import cn.promptness.blog.common.utils.HttpUtils;
 import cn.promptness.blog.exception.BizExceptionEnum;
 import cn.promptness.blog.pojo.Users;
 import cn.promptness.blog.support.service.OptionsService;
 import cn.promptness.blog.support.service.UserService;
 import cn.promptness.blog.support.service.rpc.SendMailRpc;
-import cn.promptness.blog.common.utils.AssertUtils;
-import cn.promptness.blog.common.utils.BindUtils;
-import cn.promptness.blog.common.utils.HashUtils;
-import cn.promptness.blog.common.utils.HttpUtils;
 import cn.promptness.blog.vo.AccountVO;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
@@ -87,6 +87,9 @@ public class UserController {
      */
     @PostMapping(value = "/register")
     public String register(@Validated(value = {AccountVO.Register.class}) AccountVO account) throws Exception {
+
+        UserStateEnum userStateEnum = UserStateEnum.getInstance(Integer.parseInt(optionsService.getOption(Constants.USER_STATUS)));
+        AssertUtils.isFalse(UserStateEnum.FROZEN.equals(userStateEnum),BizExceptionEnum.FROZEN_REGISTER);
 
         boolean usernameIsExist = userService.usernameIsExist(account.getUsername());
         AssertUtils.isFalse(usernameIsExist, BizExceptionEnum.REGISTER_USER_NAME_EXIST);

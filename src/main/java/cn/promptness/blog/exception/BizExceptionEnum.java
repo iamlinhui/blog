@@ -21,6 +21,7 @@ public enum BizExceptionEnum {
     FORGET_CODE_ERROR        (100003, "验证码错误",                 "page/register"),
     USER_NOT_LOGIN           (100100, "请先登录账号!",              "page/login"),
     FROZEN_ACCOUNT           (100004, "账号已冻结!",                "page/login"),
+    FROZEN_REGISTER          (100004, "站点已禁止注册!",            "page/login"),
     ACCESS_LIMIT             (100101, "后台重地,请管理员登录后访问!","page/login"),
     INDEX_PAGE               (100102, "文章不存在!",                "redirect:/"),
     ADMIN_PAGE               (100103, "文章不存在!",                "redirect:/admin/article"),

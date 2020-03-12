@@ -24,6 +24,9 @@
 					<label class="radio-inline">
 					  <input type="radio" name="userStatus" id="inlineRadio2" value="1" <c:if test="${userStatus==1}">checked="checked"</c:if> >普通会员
 					</label>
+					<label class="radio-inline">
+						<input type="radio" name="userStatus" id="inlineRadio3" value="2" <c:if test="${userStatus==2}">checked="checked"</c:if> >冻结账户
+					</label>
 				</div>
 				<div class="form-group">
 					<label class="control-label">评论的个人ID</label> 
