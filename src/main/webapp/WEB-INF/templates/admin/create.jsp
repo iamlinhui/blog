@@ -28,11 +28,11 @@
             <div class="input-group" style="padding: 10px">
                 <label>允许评论:</label>
                 <div style="display:inline;padding: 10px">
-                    <input id="commentOn" type="radio" name="commentStatus" value="true" checked="checked">
+                    <input id="commentOn" type="radio" name="commentStatus" value="true">
                     <label for="commentOn">是</label>
                 </div>
                 <div style="display:inline;padding: 10px">
-                    <input id="commentOff" type="radio" name="commentStatus" value="false">
+                    <input id="commentOff" type="radio" name="commentStatus" value="false" checked="checked">
                     <label for="commentOff">否</label>
                 </div>
             </div>

@@ -1,5 +1,6 @@
 package cn.promptness.blog.support.service.impl;
 
+import cn.promptness.blog.common.constant.enums.PostStatusEnum;
 import cn.promptness.blog.mapper.PostsMapper;
 import cn.promptness.blog.mapper.TermsMapper;
 import cn.promptness.blog.pojo.Posts;
@@ -19,6 +20,7 @@ import org.springframework.util.StringUtils;
 import javax.annotation.Resource;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * @author Lynn
@@ -122,8 +124,8 @@ public class PostsServiceImpl implements PostsService {
         Posts posts = new Posts();
         posts.setPostAuthor(user.getId());
         posts.setPostDate(new Date());
-        posts.setPostStatus(StringUtils.isEmpty(postsVO.getPublish()) ? "draft" : "publish");
-        posts.setCommentStatus(postsVO.getCommentStatus() ? "open" : "close");
+        posts.setPostStatus(StringUtils.isEmpty(postsVO.getPublish()) ? PostStatusEnum.DRAFT.getText() : PostStatusEnum.PUBLISH.getText());
+        posts.setCommentStatus(Optional.of(postsVO.getCommentStatus()).orElse(false) ? "open" : "close");
         posts.setPostName(user.getUserNicename());
         posts.setPostContent(postsVO.getPostContent());
         posts.setPostTitle(postsVO.getPostTitle());
