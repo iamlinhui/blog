@@ -36,23 +36,10 @@ public class WebConfig implements WebMvcConfigurer, ErrorPageRegistrar {
 
     @ConditionalOnProperty(prefix = "server", name = "apr", havingValue = "true")
     @Bean
-    public ServletWebServerFactory servletWebServerFactory() {
-
-        AprLifecycleListener aprLifecycleListener = new AprLifecycleListener();
-        aprLifecycleListener.setSSLEngine("off");
-
-        TomcatServletWebServerFactory webServerFactory = new TomcatServletWebServerFactory() {
-
-            @Override
-            protected void customizeConnector(Connector connector) {
-                connector.setAttribute("address", "127.0.0.1");
-                super.customizeConnector(connector);
-            }
-        };
+    @Autowired
+    public ServletWebServerFactory servletWebServerFactory(TomcatServletWebServerFactory webServerFactory) {
         webServerFactory.setProtocol("org.apache.coyote.http11.Http11AprProtocol");
-
-        webServerFactory.addContextLifecycleListeners(aprLifecycleListener);
-
+        webServerFactory.addContextLifecycleListeners(new AprLifecycleListener());
         return webServerFactory;
     }
 
@@ -80,6 +67,9 @@ public class WebConfig implements WebMvcConfigurer, ErrorPageRegistrar {
     }
 
 
+    /**
+     * 解决https重定向问题
+     */
     @Bean
     @Autowired
     public InternalResourceViewResolver defaultViewResolver(WebMvcProperties mvcProperties) {
