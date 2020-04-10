@@ -35,10 +35,11 @@ public class WebConfig implements WebMvcConfigurer, ErrorPageRegistrar {
 
     @ConditionalOnProperty(prefix = "server", name = "apr", havingValue = "true")
     @Bean
-    public ServletWebServerFactory servletWebServerFactory(TomcatServletWebServerFactory webServerFactory) {
-        webServerFactory.setProtocol("org.apache.coyote.http11.Http11AprProtocol");
-        webServerFactory.addContextLifecycleListeners(new AprLifecycleListener());
-        return webServerFactory;
+    public ServletWebServerFactory servletWebServerFactory() {
+        TomcatServletWebServerFactory tomcatServletWebServerFactory = new TomcatServletWebServerFactory();
+        tomcatServletWebServerFactory.setProtocol("org.apache.coyote.http11.Http11AprProtocol");
+        tomcatServletWebServerFactory.addContextLifecycleListeners(new AprLifecycleListener());
+        return tomcatServletWebServerFactory;
     }
 
     @Override
