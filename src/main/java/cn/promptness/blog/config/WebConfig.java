@@ -6,7 +6,6 @@ import cn.promptness.blog.support.interceptor.LoginInterceptor;
 import cn.promptness.blog.support.interceptor.OptionsInterceptor;
 import cn.promptness.blog.support.interceptor.SessionBondingInterceptor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.catalina.connector.Connector;
 import org.apache.catalina.core.AprLifecycleListener;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -36,7 +35,6 @@ public class WebConfig implements WebMvcConfigurer, ErrorPageRegistrar {
 
     @ConditionalOnProperty(prefix = "server", name = "apr", havingValue = "true")
     @Bean
-    @Autowired
     public ServletWebServerFactory servletWebServerFactory(TomcatServletWebServerFactory webServerFactory) {
         webServerFactory.setProtocol("org.apache.coyote.http11.Http11AprProtocol");
         webServerFactory.addContextLifecycleListeners(new AprLifecycleListener());
