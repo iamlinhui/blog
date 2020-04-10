@@ -7,6 +7,7 @@ import cn.promptness.blog.support.interceptor.OptionsInterceptor;
 import cn.promptness.blog.support.interceptor.SessionBondingInterceptor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.catalina.core.AprLifecycleListener;
+import org.apache.coyote.http11.Http11AprProtocol;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.web.servlet.WebMvcProperties;
@@ -37,7 +38,7 @@ public class WebConfig implements WebMvcConfigurer, ErrorPageRegistrar {
     @Bean
     public ServletWebServerFactory servletWebServerFactory() {
         TomcatServletWebServerFactory tomcatServletWebServerFactory = new TomcatServletWebServerFactory();
-        tomcatServletWebServerFactory.setProtocol("org.apache.coyote.http11.Http11AprProtocol");
+        tomcatServletWebServerFactory.setProtocol(Http11AprProtocol.class.getName());
         tomcatServletWebServerFactory.addContextLifecycleListeners(new AprLifecycleListener());
         return tomcatServletWebServerFactory;
     }
