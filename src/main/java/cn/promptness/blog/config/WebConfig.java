@@ -7,8 +7,11 @@ import cn.promptness.blog.support.interceptor.OptionsInterceptor;
 import cn.promptness.blog.support.interceptor.SessionBondingInterceptor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.catalina.core.AprLifecycleListener;
+import org.apache.catalina.startup.Tomcat;
+import org.apache.coyote.UpgradeProtocol;
 import org.apache.coyote.http11.Http11AprProtocol;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.web.servlet.WebMvcProperties;
 import org.springframework.boot.web.embedded.tomcat.TomcatServletWebServerFactory;
@@ -22,6 +25,7 @@ import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 
+import javax.servlet.Servlet;
 import java.util.List;
 
 
@@ -35,6 +39,7 @@ import java.util.List;
 public class WebConfig implements WebMvcConfigurer, ErrorPageRegistrar {
 
     @ConditionalOnProperty(prefix = "server", name = "apr", havingValue = "true")
+    @ConditionalOnClass({Servlet.class, Tomcat.class, UpgradeProtocol.class})
     @Bean
     public ServletWebServerFactory servletWebServerFactory() {
         TomcatServletWebServerFactory tomcatServletWebServerFactory = new TomcatServletWebServerFactory();
