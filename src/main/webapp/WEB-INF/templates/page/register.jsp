@@ -24,7 +24,7 @@
         <div id="navbar" class="collapse navbar-collapse">
           <ul class="nav navbar-nav">
             <li class="active"><a href="index.html">首页</a></li>
-            <li><a href="readme.html">关于</a></li>
+            <li><a target="_blank" href="https://github.com/iamlinhui">关于</a></li>
           </ul>
           <ul class="nav navbar-nav navbar-right">
 				<c:if test="${empty sessionScope.user}">
