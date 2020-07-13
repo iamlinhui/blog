@@ -30,7 +30,7 @@ import java.util.Map;
  */
 public class HttpClientUtils {
 
-    private final static Charset UTF_8 = StandardCharsets.UTF_8;
+    private static final Charset UTF_8 = StandardCharsets.UTF_8;
 
     private final CloseableHttpClient httpClient;
 
