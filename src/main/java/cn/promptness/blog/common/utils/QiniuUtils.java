@@ -1,6 +1,9 @@
 package cn.promptness.blog.common.utils;
 
+import cn.promptness.blog.common.constant.Constants;
 import cn.promptness.blog.config.properties.QiniuProperties;
+import com.google.common.cache.Cache;
+import com.google.common.cache.CacheBuilder;
 import com.qiniu.common.QiniuException;
 import com.qiniu.http.Response;
 import com.qiniu.storage.UploadManager;
@@ -11,9 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.io.File;
-import java.time.Instant;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author : Lynn
@@ -22,9 +23,9 @@ import java.util.concurrent.ConcurrentHashMap;
 @Component
 public class QiniuUtils {
 
-    private Logger logger = LoggerFactory.getLogger(QiniuUtils.class);
+    private static final Logger logger = LoggerFactory.getLogger(QiniuUtils.class);
 
-    private static final Map<String, Object> CACHE_MAP = new ConcurrentHashMap<>();
+    private static final Cache<String, String> CACHE_MANAGER = CacheBuilder.newBuilder().maximumSize(100).expireAfterWrite(3600, TimeUnit.SECONDS).build();
 
     @Autowired
     private QiniuProperties qiniuProperties;
@@ -50,15 +51,11 @@ public class QiniuUtils {
      * 简单上传，使用默认策略，只需要设置上传的空间名就可以了
      */
     private String getUpToken() {
-
-        Instant expiresDate = (Instant) CACHE_MAP.get("EXPIRES_DATE");
-        Instant currentDate = Instant.now();
-        if (expiresDate == null || currentDate.isAfter(expiresDate)) {
-            String uploadToken = auth.uploadToken(qiniuProperties.getBucketName());
-            CACHE_MAP.put("UPLOAD_TOKEN", uploadToken);
-            CACHE_MAP.put("EXPIRES_DATE", currentDate.plusSeconds(3600));
-            return uploadToken;
+        String uploadToken = CACHE_MANAGER.getIfPresent(Constants.UPLOAD_TOKEN);
+        if (uploadToken == null) {
+            uploadToken = auth.uploadToken(qiniuProperties.getBucketName());
+            CACHE_MANAGER.put(Constants.UPLOAD_TOKEN, uploadToken);
         }
-        return (String) CACHE_MAP.get("UPLOAD_TOKEN");
+        return uploadToken;
     }
 }

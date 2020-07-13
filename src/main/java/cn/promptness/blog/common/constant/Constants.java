@@ -34,4 +34,6 @@ public interface Constants {
 
     String USER_STATUS = "userStatus";
 
+    String UPLOAD_TOKEN = "UPLOAD_TOKEN";
+
 }
