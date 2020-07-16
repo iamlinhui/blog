@@ -24,7 +24,7 @@
 				</div>
 
 				<div class="inner cover">
-					<h1 style="font-size: 80px; font-family: 楷体;" class="cover-heading">欢迎使用</h1>
+					<h1 style="text-align: center; font-size: 80px; font-family: 楷体;" class="cover-heading">欢迎使用</h1>
 				</div>
 				<div class="mastfoot">
 					<div class="inner">
