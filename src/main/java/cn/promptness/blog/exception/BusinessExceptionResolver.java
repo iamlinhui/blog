@@ -24,7 +24,7 @@ import java.io.IOException;
  */
 public class BusinessExceptionResolver implements HandlerExceptionResolver, Ordered {
 
-    private static Logger logger = LoggerFactory.getLogger(BusinessExceptionResolver.class);
+    private static final Logger logger = LoggerFactory.getLogger(BusinessExceptionResolver.class);
 
     /**
      * The default name of the exception attribute: "message".

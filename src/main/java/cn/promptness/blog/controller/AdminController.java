@@ -12,6 +12,7 @@ import cn.promptness.blog.pojo.Users;
 import cn.promptness.blog.support.service.PostsService;
 import cn.promptness.blog.support.service.TermsService;
 import cn.promptness.blog.support.service.UserService;
+import cn.promptness.blog.support.service.rpc.BingPictureRpc;
 import cn.promptness.blog.vo.HttpResult;
 import cn.promptness.blog.vo.PostsVO;
 import cn.promptness.blog.vo.UploadVO;
@@ -50,12 +51,15 @@ public class AdminController {
     private QiniuProperties qiniuProperties;
     @Resource
     private QiniuUtils qiniuUtils;
+    @Resource
+    private BingPictureRpc bingPictureRpc;
 
     /**
      * 到后台页面
      */
     @GetMapping(value = {"/", ""})
-    public String toAdminPage() {
+    public String toAdminPage(Model model) {
+        model.addAttribute(Constants.BING_URL_KEY, bingPictureRpc.getUrl());
         return "admin/index";
     }
 

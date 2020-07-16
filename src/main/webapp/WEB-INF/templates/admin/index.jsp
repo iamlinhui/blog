@@ -12,7 +12,7 @@
 	<link href="static/css/cover.css" rel="stylesheet" type="text/css" />
 	<title>${title} - 后台页面</title>
 </head>
-<body background="${imageHost}<fmt:formatDate pattern="yyyy-MM-dd" value="<%=new Date()%>"/>.jpg">
+<body background="${imageUrl}">
 <div class="site-wrapper">
 	<div class="site-wrapper-inner">
 		<div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
