@@ -1,4 +1,3 @@
-<%@page import="java.text.SimpleDateFormat"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" isErrorPage="true"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
@@ -48,20 +47,19 @@
 			</div>	
 		</div>
 		<c:if test="${article.commentStatus=='open'}">
-		<div class="list-group">
-			<div id="SOHUCS" sid="${article.id}" ></div> 
-		</div>
-		<script type="text/javascript"> 
-			(function(){ 
-			var appid = '${commentId}'; 
-			var conf = 'prod_a19f71e0f52ae23a36841591e3641d11'; 
-			var width = window.innerWidth || document.documentElement.clientWidth; 
-			if (width < 960) { 
-			window.document.write('<script id="changyan_mobile_js" charset="utf-8" type="text/javascript" src="https://changyan.sohu.com/upload/mobile/wap-js/changyan_mobile.js?client_id=' + appid + '&conf=' + conf + '"><\/script>'); } else { var loadJs=function(d,a){var c=document.getElementsByTagName("head")[0]||document.head||document.documentElement;var b=document.createElement("script");b.setAttribute("type","text/javascript");b.setAttribute("charset","UTF-8");b.setAttribute("src",d);if(typeof a==="function"){if(window.attachEvent){b.onreadystatechange=function(){var e=b.readyState;if(e==="loaded"||e==="complete"){b.onreadystatechange=null;a()}}}else{b.onload=a}}c.appendChild(b)};loadJs("https://changyan.sohu.com/upload/changyan.js",function(){window.changyan.api.config({appid:appid,conf:conf})}); } })(); 
-		</script>
-       		 </c:if>
+			<div class="list-group">
+				<div id="SOHUCS" sid="${article.id}"></div>
+			</div>
+			<script charset="utf-8" type="text/javascript" src="https://cy-cdn.kuaizhan.com/upload/changyan.js"></script>
+			<script type="text/javascript">
+				window.changyan.api.config({
+					appid: '${commentId}',
+					conf: '${commentKey}'
+				});
+			</script>
+       	</c:if>
 		
-	<%@include file="/WEB-INF/templates/common/foot.jsp" %>
+		<%@include file="/WEB-INF/templates/common/foot.jsp" %>
 	</div>
 	<%--容器结束 --%>
 </body>
