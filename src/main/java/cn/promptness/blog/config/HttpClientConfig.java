@@ -48,7 +48,7 @@ public class HttpClientConfig {
                 .setConnectTimeout(httpClientProperties.getConnectTimeOut())
                 .setSocketTimeout(httpClientProperties.getSocketTimeOut())
                 .setConnectionRequestTimeout(httpClientProperties.getConnectionRequestTimeout())
-                .setCookieSpec(CookieSpecs.DEFAULT)
+                .setCookieSpec(CookieSpecs.IGNORE_COOKIES)
                 .setExpectContinueEnabled(httpClientProperties.getExpectContinueEnabled())
                 .setTargetPreferredAuthSchemes(Arrays.asList(AuthSchemes.NTLM, AuthSchemes.DIGEST))
                 .setProxyPreferredAuthSchemes(ImmutableList.of(AuthSchemes.BASIC))
