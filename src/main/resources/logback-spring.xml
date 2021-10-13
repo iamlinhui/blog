@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
 
+    <springProperty scope="context" name="LOG_PATH" source="logging.path" defaultValue="/logs/blog/"/>
+    <springProperty scope="context" name="LOG_FILE" source="logging.file" defaultValue="stdout.log"/>
+
     <include resource="org/springframework/boot/logging/logback/defaults.xml"/>
     <include resource="org/springframework/boot/logging/logback/console-appender.xml"/>
 
