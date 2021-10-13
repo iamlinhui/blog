@@ -21,20 +21,17 @@
 	          <ul class="nav nav-sidebar">
 	          	<div class="row placeholders">
 	             <div class="placeholder">
-	               <img src="" width="80" height="80" class="img-responsive" alt="">
 	               <h4>${sessionScope.user.userLogin}</h4>
 	              <span class="text-muted">${sessionScope.user.userNicename}</span>
 	             </div>
 	           </div>
 	            <li class="active"><a><span class="glyphicon glyphicon-user" aria-hidden="true">&nbsp;个人信息</span></a></li>
-	            <li><a target="_blank" href="https://en.gravatar.com/emails/"><span class="glyphicon glyphicon-picture" aria-hidden="true">&nbsp;Gravatar头像</span></a></li>
 	          </ul>
 	        </div>
         	<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
 	           
 	        	<div class="thumbnail">
 			      <div class="caption">
-	        		<img src="" width="80" height="80" class="img-responsive" alt="">
 			        <h3>${sessionScope.user.userLogin}<small>(${sessionScope.user.userNicename})</small></h3>
 			        <p>注册时间:</p>
 			        <p><fmt:formatDate pattern="yyyy年MM月dd日 HH:mm:ss" value="${sessionScope.user.userRegistered}"/></p>
@@ -110,60 +107,55 @@
 </div>
 <%--模态框结束 --%>
 </body>
-<script src="static/script/md5.min.js"></script>
 <script type="text/javascript">
-$(function(){
-	var hash = md5($("#email").text());
-	console.log(hash);
-	$("img").attr("src","https://www.gravatar.com/avatar/"+hash);
-    $('#modifyPsw')
-    .bootstrapValidator({
-        feedbackIcons: {
-            valid: 'glyphicon glyphicon-ok',
-            invalid: 'glyphicon glyphicon-remove',
-            validating: 'glyphicon glyphicon-refresh'
-        },
-        fields: {
-            password: {
-                message:'密码无效',
-                validators: {
-                    notEmpty: {
-                        message: '密码不能为空'
-                    },
-                    stringLength: {
-                        min: 6,
-                        max: 30,
-                        message: '密码长度必须在6到30之间'
-                    },
-                    regexp: {
-                        regexp: /^[a-zA-Z0-9_.]+$/,
-                        message: '密码格式不正确'
-                    }
-                }
-            },
-            repassword: {
-                message: '密码无效',
-                validators: {
-                    notEmpty: {
-                        message: '确认密码不能为空'
-                    },
-                    stringLength: {
-                        min: 6,
-                        max: 30,
-                        message: '长度必须在6到30之间'
-                    },
-                    identical: {//相同
-                        field: 'password',
-                        message: '两次密码不一致'
-                    },
-                    regexp: {//匹配规则
-                        regexp: /^[a-zA-Z0-9_.]+$/,
-                        message: '密码格式不正确'
-                    }
-                }
-            }
-        }
-    })
+$(function () {
+	$('#modifyPsw').bootstrapValidator({
+		feedbackIcons: {
+			valid: 'glyphicon glyphicon-ok',
+			invalid: 'glyphicon glyphicon-remove',
+			validating: 'glyphicon glyphicon-refresh'
+		},
+		fields: {
+			password: {
+				message: '密码无效',
+				validators: {
+					notEmpty: {
+						message: '密码不能为空'
+					},
+					stringLength: {
+						min: 6,
+						max: 30,
+						message: '密码长度必须在6到30之间'
+					},
+					regexp: {
+						regexp: /^[a-zA-Z0-9_.]+$/,
+						message: '密码格式不正确'
+					}
+				}
+			},
+			repassword: {
+				message: '密码无效',
+				validators: {
+					notEmpty: {
+						message: '确认密码不能为空'
+					},
+					stringLength: {
+						min: 6,
+						max: 30,
+						message: '长度必须在6到30之间'
+					},
+					identical: {//相同
+						field: 'password',
+						message: '两次密码不一致'
+					},
+					regexp: {//匹配规则
+						regexp: /^[a-zA-Z0-9_.]+$/,
+						message: '密码格式不正确'
+					}
+				}
+			}
+		}
+	})
 });
 </script>
 </html>

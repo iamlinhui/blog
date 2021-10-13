@@ -9,7 +9,7 @@
         <span class="icon-bar"></span>
       </button>
       <a class="navbar-brand" href="/">${title}</a>
-      <a href="#" class="navbar-brand"><small>后台页面</small></a>
+      <a href="admin/article" class="navbar-brand"><small>后台页面</small></a>
     </div>
     <div id="navbar" class="collapse navbar-collapse">
       <ul class="nav navbar-nav">
@@ -20,14 +20,7 @@
         <li <c:if test="${pageContext.request.requestURI.contains('website')}">class="active"</c:if>><a href="admin/website">站点设置</a></li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
-        <c:if test="${empty sessionScope.user}">
-            <li><a href="login">登录</a></li>
-            <li><a href="register">注册</a></li>
-        </c:if>
-        <c:if test="${not empty sessionScope.user}">
-            <li><a href="admin">管理站点</a></li>
-            <li><a href="logout">退出登录</a></li>
-        </c:if>
+        <li><a href="logout">退出登录</a></li>
       </ul>
     </div>
   </div>
