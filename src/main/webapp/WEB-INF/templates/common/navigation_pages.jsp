@@ -1,4 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" isErrorPage="true"%>
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" isErrorPage="true"%>
 <%--页头开始 --%>
 	<nav class="navbar navbar-inverse navbar-fixed-top ">
       <div class="container">
@@ -33,7 +33,7 @@
 					<li><a href="register">注册</a></li>
 				</c:if>
 				<c:if test="${not empty sessionScope.user and sessionScope.user.userStatus==0}">
-					<li><a href="admin">管理站点</a></li>
+					<li><a href="admin/article">管理站点</a></li>
 					<li><a href="user">${sessionScope.user.userNicename }</a></li>
 					<li><a href="logout">退出登录</a></li>
 				</c:if>

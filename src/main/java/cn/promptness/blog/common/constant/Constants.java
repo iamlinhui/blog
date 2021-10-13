@@ -35,8 +35,4 @@ public interface Constants {
     String USER_STATUS = "userStatus";
 
     String UPLOAD_TOKEN = "UPLOAD_TOKEN";
-
-    String BING_HOST = "https://www.bing.com";
-
-    String BING_URL_KEY = "imageUrl";
 }

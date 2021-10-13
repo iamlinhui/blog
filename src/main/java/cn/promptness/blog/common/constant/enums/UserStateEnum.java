@@ -14,7 +14,7 @@ public enum UserStateEnum {
     /**
      * 状态：用户状态(0管理,1会员)
      */
-    ADMIN(0, "管理员","redirect:/admin"),
+    ADMIN(0, "管理员","redirect:/admin/article"),
 
     NORMAL(1, "正常", "redirect:/"),
 
