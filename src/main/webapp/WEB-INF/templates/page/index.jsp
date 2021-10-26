@@ -119,7 +119,7 @@
             type: "post",
             success: function (msg) {
                 if (msg.status === 0) {
-                    $("#weather img").attr("src", "static/weathercn/" + msg.result.img + ".png");
+                    $("#weather img").attr("src", "static/img/weather/" + msg.result.img + ".png");
 					$("#weather li:eq(2)").html(msg.result.city + msg.result.weather);
                     $("#weather").show();
                 }
@@ -129,7 +129,7 @@
 
         editormd.markdownToHTML("panel-body", {
                 htmlDecode: "style,script,iframe",
-                emoji: true,
+                emoji: false,
                 taskList: true,
                 tocm: true,
                 tex: true,

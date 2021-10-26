@@ -2,9 +2,8 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ page import="java.util.Date" %>
 <div class="footer text-center">
-    <em style="font-family: 楷体,serif;">
-        Copyright © <fmt:formatDate value="<%=new Date()%>" pattern="yyyy"/> by 林省之. All Rights Reserved.
-    </em>
+    <a href="https://beian.miit.gov.cn" target="_blank">鄂ICP备2021018033号</a>
+    Copyright &copy; <fmt:formatDate value="<%=new Date()%>" pattern="yyyy"/> by 林省之. All Rights Reserved.
 </div>
 <div hidden>${script}</div>
 <style>

@@ -26,7 +26,7 @@ $(function () {
         imageUploadURL: "/admin/upload",
         taskList: true,
         htmlDecode: "style,script,iframe|on*",
-        emoji: true,
+        emoji: false,
         tex: true,
         flowChart: true,
         sequenceDiagram: true
