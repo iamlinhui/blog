@@ -7,5 +7,5 @@
 <script type="text/javascript" src="static/script/jquery-3.2.1.js"></script>
 <link href="static/css/bootstrap.css" rel="stylesheet" type="text/css"/>
 <link href="static/css/bootstrapValidator.css" rel="stylesheet">
-<script src="static/script/bootstrap.js"></script>
+<script src="static/script/bootstrap.min.js"></script>
 <script src="static/script/bootstrapValidator.js"></script>
