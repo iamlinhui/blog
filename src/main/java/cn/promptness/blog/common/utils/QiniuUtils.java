@@ -13,7 +13,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.io.File;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -34,10 +33,10 @@ public class QiniuUtils {
     @Autowired
     private UploadManager uploadManager;
 
-    public boolean upload(File path, String filename) {
+    public boolean upload(byte[] data, String filename) {
         try {
             // 调用put方法上传
-            Response res = uploadManager.put(path, filename, getUpToken());
+            Response res = uploadManager.put(data, filename, getUpToken());
             logger.info(res.bodyString());
             return true;
         } catch (QiniuException e) {
