@@ -2,13 +2,13 @@ package cn.promptness.blog.controller;
 
 import cn.promptness.blog.common.constant.Constants;
 import cn.promptness.blog.common.constant.enums.PostStatusEnum;
+import cn.promptness.blog.common.utils.AssertUtils;
+import cn.promptness.blog.common.utils.HttpUtils;
 import cn.promptness.blog.exception.BizExceptionEnum;
 import cn.promptness.blog.pojo.Posts;
 import cn.promptness.blog.support.service.PostsService;
 import cn.promptness.blog.support.service.TermsService;
-import cn.promptness.blog.support.service.rpc.WeatherRpc;
-import cn.promptness.blog.common.utils.AssertUtils;
-import cn.promptness.blog.common.utils.HttpUtils;
+import cn.promptness.blog.support.service.rpc.WeatherService;
 import com.github.pagehelper.PageInfo;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,7 +16,6 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
-import java.util.Map;
 
 /**
  * @author Lynn
@@ -29,15 +28,15 @@ public class PostsController {
     @Resource
     private TermsService termsService;
     @Resource
-    private WeatherRpc weatherRpc;
+    private WeatherService weatherService;
 
     /**
      * 获取天气
      */
     @ResponseBody
     @PostMapping(value = "/weather")
-    public Map getWeather() throws Exception {
-        return weatherRpc.getWeather(HttpUtils.getIp());
+    public String getWeather() throws Exception {
+        return weatherService.getWeather(HttpUtils.getIp());
     }
 
     /**

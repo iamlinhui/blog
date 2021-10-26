@@ -1,8 +1,8 @@
 package cn.promptness.blog.support.service.rpc;
 
 import cn.promptness.blog.common.constant.Constants;
-import cn.promptness.blog.support.service.OptionsService;
 import cn.promptness.blog.common.utils.HttpClientUtils;
+import cn.promptness.blog.support.service.OptionsService;
 import cn.promptness.blog.vo.HttpResult;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
@@ -11,7 +11,6 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.util.Map;
 
 /**
  * @author lionel
@@ -19,7 +18,7 @@ import java.util.Map;
  * @since v1.0.0
  */
 @Service
-public class WeatherRpc {
+public class WeatherService {
 
     @Resource
     private HttpClientUtils httpClientUtil;
@@ -27,9 +26,9 @@ public class WeatherRpc {
     private OptionsService optionsService;
 
     @Cacheable(value = "weatherCache", key = "'weather' + #ip")
-    public Map getWeather(String ip) throws Exception {
+    public String getWeather(String ip) throws Exception {
         BasicHeader basicHeader = new BasicHeader("Authorization", "APPCODE " + optionsService.getOption(Constants.APPCODE));
-        HttpResult httpResult = httpClientUtil.doGet("http://jisutqybmf.market.alicloudapi.com/weather/query", ImmutableMap.of("ip", ip), Lists.newArrayList(basicHeader));
-        return httpResult.getContent(Map.class);
+        HttpResult httpResult = httpClientUtil.doGet("https://jisutqybmf.market.alicloudapi.com/weather/query", ImmutableMap.of("ip", ip), Lists.newArrayList(basicHeader));
+        return httpResult.getMessage();
     }
 }

@@ -11,7 +11,7 @@ import cn.promptness.blog.exception.BizExceptionEnum;
 import cn.promptness.blog.pojo.Users;
 import cn.promptness.blog.support.service.OptionsService;
 import cn.promptness.blog.support.service.UserService;
-import cn.promptness.blog.support.service.rpc.SendMailRpc;
+import cn.promptness.blog.support.service.rpc.SendMailService;
 import cn.promptness.blog.vo.AccountVO;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
@@ -37,7 +37,7 @@ public class UserController {
     @Resource
     private OptionsService optionsService;
     @Resource
-    private SendMailRpc sendMailRpc;
+    private SendMailService sendMailService;
 
     /**
      * 到登陆页面
@@ -98,7 +98,7 @@ public class UserController {
         //1).生成密码
         String sendPassword = HashUtils.getRandomSalt(8);
         //2).发送密码到邮箱
-        sendMailRpc.sendMail(account.getEmail(), "注册账号", sendPassword);
+        sendMailService.sendMail(account.getEmail(), "注册账号", sendPassword);
 
         //3).保存账户信息
         Users users = new Users();
@@ -123,7 +123,7 @@ public class UserController {
         AssertUtils.isTrue(emailIsExist, BizExceptionEnum.FORGET_EMAIL_NOT_EXIST);
 
         String sendPassword = HashUtils.getRandomSalt(8);
-        sendMailRpc.sendMail(account.getEmail(), "重置密码", sendPassword);
+        sendMailService.sendMail(account.getEmail(), "重置密码", sendPassword);
         userService.updatePassword(HashUtils.md5(sendPassword), account.getEmail());
 
         return "redirect:/login";

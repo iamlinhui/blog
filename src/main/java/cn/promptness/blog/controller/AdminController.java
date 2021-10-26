@@ -2,7 +2,7 @@ package cn.promptness.blog.controller;
 
 import cn.promptness.blog.common.constant.Constants;
 import cn.promptness.blog.common.utils.AssertUtils;
-import cn.promptness.blog.common.utils.QiniuUtils;
+import cn.promptness.blog.support.service.rpc.QiNiuService;
 import cn.promptness.blog.common.utils.SnowflakeIdUtils;
 import cn.promptness.blog.config.properties.QiniuProperties;
 import cn.promptness.blog.exception.BizExceptionEnum;
@@ -48,7 +48,7 @@ public class AdminController {
     @Resource
     private QiniuProperties qiniuProperties;
     @Resource
-    private QiniuUtils qiniuUtils;
+    private QiNiuService qiNiuService;
 
     /**
      * 到后台页面
@@ -157,7 +157,7 @@ public class AdminController {
             String fileName = SnowflakeIdUtils.nextId() + Objects.requireNonNull(multipartFile.getOriginalFilename()).substring(multipartFile.getOriginalFilename().lastIndexOf("."));
             ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
             IOUtils.copy(multipartFile.getInputStream(), byteArrayOutputStream);
-            boolean upload = qiniuUtils.upload(byteArrayOutputStream.toByteArray(), fileName);
+            boolean upload = qiNiuService.upload(byteArrayOutputStream.toByteArray(), fileName);
             AssertUtils.isTrue(upload, BizExceptionEnum.SERVER_ERROR);
             return UploadVO.success(qiniuProperties.getImageHost() + fileName);
         } catch (Exception e) {

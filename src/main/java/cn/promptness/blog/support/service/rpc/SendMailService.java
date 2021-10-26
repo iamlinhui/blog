@@ -16,7 +16,7 @@ import javax.mail.internet.MimeMessage;
  */
 @Component
 @Slf4j
-public class SendMailRpc {
+public class SendMailService {
 
     @Resource
     private JavaMailSender javaMailSender;

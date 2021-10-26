@@ -2,8 +2,10 @@ package cn.promptness.blog.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.core.task.AsyncTaskExecutor;
+import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
 import java.util.concurrent.ThreadPoolExecutor;
@@ -13,6 +15,8 @@ import java.util.concurrent.ThreadPoolExecutor;
  * @date : 2019-05-23 21:33
  */
 @Configuration
+@EnableAsync
+@EnableAspectJAutoProxy(proxyTargetClass = true)
 public class AsyncConfig {
 
     /**
