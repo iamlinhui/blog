@@ -25,6 +25,7 @@ $(function () {
         imageFormats: ["jpg", "jpeg", "gif", "png", "bmp", "webp"],
         imageUploadURL: "/admin/upload",
         taskList: true,
+        atLink: false,
         htmlDecode: "style,script,iframe|on*",
         emoji: false,
         tex: true,

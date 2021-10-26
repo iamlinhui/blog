@@ -131,6 +131,7 @@
                 htmlDecode: "style,script,iframe",
                 emoji: false,
                 taskList: true,
+			    atLink: false,
                 tocm: true,
                 tex: true,
                 flowChart: true,
