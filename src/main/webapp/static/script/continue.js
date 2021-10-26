@@ -27,7 +27,7 @@ $(function () {
         taskList: true,
         atLink: false,
         htmlDecode: "style,script,iframe|on*",
-        emoji: false,
+        emoji: true,
         tex: true,
         flowChart: true,
         sequenceDiagram: true

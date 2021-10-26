@@ -67,7 +67,7 @@
 	$(function () {
 		editormd.markdownToHTML("panel-body", {
 					htmlDecode: "style,script,iframe",
-					emoji: false,
+					emoji: true,
 					taskList: true,
 					atLink: false,
 					tocm: true,
