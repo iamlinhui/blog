@@ -26,6 +26,4 @@ public class QiniuProperties {
 
     private String imageHost;
 
-    private String localBucketName;
-
 }

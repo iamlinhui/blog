@@ -26,8 +26,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
-import java.io.File;
-import java.io.FileOutputStream;
+import java.io.ByteArrayOutputStream;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -156,9 +155,9 @@ public class AdminController {
     public UploadVO upload(@RequestParam(value = "editormd-image-file") MultipartFile multipartFile) {
         try {
             String fileName = SnowflakeIdUtils.nextId() + Objects.requireNonNull(multipartFile.getOriginalFilename()).substring(multipartFile.getOriginalFilename().lastIndexOf("."));
-            File file = new File(qiniuProperties.getLocalBucketName() + fileName);
-            IOUtils.copy(multipartFile.getInputStream(), new FileOutputStream(file));
-            boolean upload = qiniuUtils.upload(file, fileName);
+            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+            IOUtils.copy(multipartFile.getInputStream(), byteArrayOutputStream);
+            boolean upload = qiniuUtils.upload(byteArrayOutputStream.toByteArray(), fileName);
             AssertUtils.isTrue(upload, BizExceptionEnum.SERVER_ERROR);
             return UploadVO.success(qiniuProperties.getImageHost() + fileName);
         } catch (Exception e) {
