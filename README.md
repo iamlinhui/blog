@@ -25,7 +25,6 @@ spring.application.name = blog
 server.apr = false
 server.servlet.session.timeout = 1h
 server.servlet.session.cookie.name = ___blog_______
-#server.servlet.session.cookie.max-age = 1h
 server.servlet.session.cookie.http-only = true
 server.servlet.jsp.init-parameters.trimSpaces = true
 spring.mvc.view.prefix = /WEB-INF/templates/
@@ -69,5 +68,4 @@ qiniu.access-key =
 qiniu.secret-key =
 qiniu.bucket-name = 
 qiniu.image-host =
-qiniu.local-bucket-name =
 ```
