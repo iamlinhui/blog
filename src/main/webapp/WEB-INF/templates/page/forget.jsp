@@ -24,7 +24,7 @@
         </div>
         <div id="navbar" class="collapse navbar-collapse">
           <ul class="nav navbar-nav">
-            <li class="active"><a href="/">首页</a></li>
+            <li><a href="/">首页</a></li>
             <li><a target="_blank" href="https://github.com/iamlinhui">关于</a></li>
           </ul>
           <ul class="nav navbar-nav navbar-right">

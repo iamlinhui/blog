@@ -9,12 +9,12 @@
 				<li class="disabled"><span aria-hidden="true">&laquo;首页</span></li>
 			</c:otherwise>
 		</c:choose>
-		<c:forEach items="${pageInfo.navigatepageNums }" var="navigatepageNum">
-			<c:if test="${navigatepageNum==pageInfo.pageNum }">
-				<li class="active"><span>${navigatepageNum }</span></li>
+		<c:forEach items="${pageInfo.navigatepageNums }" var="navigatePageNum">
+			<c:if test="${navigatePageNum==pageInfo.pageNum }">
+				<li class="active"><span>${navigatePageNum}</span></li>
 			</c:if>
-			<c:if test="${navigatepageNum!=pageInfo.pageNum }">
-				<li><a href="${pageScope.targetUrl}/${navigatepageNum}">${navigatepageNum }</a></li>
+			<c:if test="${navigatePageNum!=pageInfo.pageNum}">
+				<li><a href="${pageScope.targetUrl}/${navigatePageNum}">${navigatePageNum}</a></li>
 			</c:if>
 		</c:forEach>
 		<c:choose>
