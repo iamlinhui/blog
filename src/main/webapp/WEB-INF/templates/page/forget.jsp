@@ -6,6 +6,8 @@
 	<%@include file="/WEB-INF/templates/common/base.jsp"%>
 	<link href="static/css/signin.css" rel="stylesheet" type="text/css" />
 	<link href="static/css/offcanvas.css" rel="stylesheet" type="text/css" />
+	<script type="text/javascript"  src="static/layer/layer.js"></script>
+	<script type="text/javascript"  src="static/script/account.js"></script>
 	<title>${ title} - 找回密码</title>
 </head>
 <body>
@@ -13,7 +15,6 @@
       <div class="container">
         <div class="navbar-header">
           <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-            <span class="sr-only">Toggle navigation</span>
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
@@ -50,25 +51,31 @@
     <br>
 	<%--容器开始 --%>
 	<div class="container">
-			<form method="post" action="forget" class="form-signin">
+		<form id="login" method="post" action="forget" class="form-signin">
 			<c:if test="${not empty error }">
-				<div style="text-align: center;">${error.message }</div>
+				<div style="text-align: center;">${error.message}</div>
 			</c:if>
-				<h2 class="form-signin-heading">找回密码</h2>
-				<label class="sr-only" for="exampleInputEmail1">电子邮件地址</label> 
-				<input name="email" type="email" class="form-control" id="exampleInputEmail1" placeholder="电子邮件地址" required autofocus>
-				<div>
-					<label> 
-					请输入您的电子邮箱地址。您会收到一封包含新密码的电子邮件。
-					</label>
+			<div class="form-group">
+				<input name="email" type="email" class="form-control" id="email" placeholder="电子邮件地址" required autofocus>
+			</div>
+			<div class="form-group">
+				<div class="input-group">
+					<input maxlength="8" name="registerCode" class="form-control" type="text" id="captcha" placeholder="请输入邮箱验证码" autocomplete="false" required/>
+					<div class="input-group-btn" id="getCode">
+						<a class="btn btn-lg btn-default"><small id="getCodeTxt">获取验证码</small></a>
+					</div>
 				</div>
-				<button type="submit" class="btn btn-lg btn-primary btn-block">获取新密码</button>
-			<div>
+			</div>
+			<div class="form-group">
+				<input name="password" type="password" class="form-control" id="password" placeholder="新的密码" required/>
+			</div>
+			<button type="submit" class="btn btn-lg btn-primary btn-block">重置密码</button>
+			<div >
 				<label>
 					<a href="login">登录</a>|<a href="register">注册</a>
 				</label>
 			</div>
-			</form>
+		</form>
 	</div>
 	<%@include file="/WEB-INF/templates/common/foot.jsp" %>
 	<%--容器结束 --%>

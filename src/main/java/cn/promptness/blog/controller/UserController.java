@@ -13,13 +13,11 @@ import cn.promptness.blog.support.service.OptionsService;
 import cn.promptness.blog.support.service.UserService;
 import cn.promptness.blog.support.service.rpc.SendMailService;
 import cn.promptness.blog.vo.AccountVO;
+import cn.promptness.blog.vo.HttpResult;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
@@ -70,6 +68,7 @@ public class UserController {
     @PostMapping(value = "/login")
     public String login(@Validated(value = {AccountVO.Login.class}) AccountVO account) throws Exception {
 
+        AssertUtils.isTrue(Objects.equals(HttpUtils.getRequest().getSession().getAttribute(Constants.LOGIN_CODE_KEY), account.getLoginCode()), BizExceptionEnum.LOGIN_CODE_ERROR);
         Users users = userService.doLogin(account);
         AssertUtils.notNull(users, BizExceptionEnum.LOGIN_ERROR);
 
@@ -82,29 +81,46 @@ public class UserController {
         return userStateEnum.getPath();
     }
 
+
+    @ResponseBody
+    @PostMapping(value = "/email")
+    public HttpResult email(@Validated(value = {AccountVO.EmailCode.class}) AccountVO account) throws Exception {
+
+        UserStateEnum userStateEnum = UserStateEnum.getInstance(Integer.parseInt(optionsService.getOption(Constants.USER_STATUS)));
+        AssertUtils.isFalse(UserStateEnum.FROZEN.equals(userStateEnum), BizExceptionEnum.FROZEN_REGISTER);
+
+        // 生成邮箱验证码
+        String emailCode = HashUtils.getRandomSalt(8);
+        // 发送验证码到邮箱
+        Boolean result = sendMailService.sendMail(account.getEmail(), "邮箱验证码", emailCode).get();
+        AssertUtils.isTrue(result, BizExceptionEnum.SEND_EMAIL_CODE_ERROR);
+
+        HttpUtils.getRequest().getSession().setAttribute(Constants.EMAIL_CODE_KEY, emailCode + account.getEmail());
+
+        return HttpResult.SUCCESS;
+    }
+
     /**
      * 注册用户
      */
     @PostMapping(value = "/register")
     public String register(@Validated(value = {AccountVO.Register.class}) AccountVO account) throws Exception {
 
+        AssertUtils.isTrue(Objects.equals(HttpUtils.getRequest().getSession().getAttribute(Constants.EMAIL_CODE_KEY), account.getRegisterCode() + account.getEmail()), BizExceptionEnum.EMAIL_CODE_ERROR);
+
         UserStateEnum userStateEnum = UserStateEnum.getInstance(Integer.parseInt(optionsService.getOption(Constants.USER_STATUS)));
-        AssertUtils.isFalse(UserStateEnum.FROZEN.equals(userStateEnum),BizExceptionEnum.FROZEN_REGISTER);
+        AssertUtils.isFalse(UserStateEnum.FROZEN.equals(userStateEnum), BizExceptionEnum.FROZEN_REGISTER);
 
         boolean usernameIsExist = userService.usernameIsExist(account.getUsername());
         AssertUtils.isFalse(usernameIsExist, BizExceptionEnum.REGISTER_USER_NAME_EXIST);
         boolean emailIsExist = userService.emailIsExist(account.getEmail());
         AssertUtils.isFalse(emailIsExist, BizExceptionEnum.REGISTER_EMAIL_EXIST);
-        //1).生成密码
-        String sendPassword = HashUtils.getRandomSalt(8);
-        //2).发送密码到邮箱
-        sendMailService.sendMail(account.getEmail(), "注册账号", sendPassword);
 
-        //3).保存账户信息
+        // 保存账户信息
         Users users = new Users();
         users.setUserLogin(account.getUsername());
         users.setUserEmail(account.getEmail());
-        users.setUserPass(HashUtils.md5(sendPassword));
+        users.setUserPass(HashUtils.md5(account.getPassword()));
         users.setUserNicename(account.getUsername());
         users.setUserRegistered(new Date());
         users.setUserStatus(Integer.parseInt(optionsService.getOption(Constants.USER_STATUS)));
@@ -119,12 +135,12 @@ public class UserController {
     @PostMapping(value = "/forget")
     public String forget(@Validated(value = {AccountVO.Forget.class}) AccountVO account) throws Exception {
 
+        AssertUtils.isTrue(Objects.equals(HttpUtils.getRequest().getSession().getAttribute(Constants.EMAIL_CODE_KEY), account.getRegisterCode() + account.getEmail()), BizExceptionEnum.EMAIL_CODE_ERROR);
+
         boolean emailIsExist = userService.emailIsExist(account.getEmail());
         AssertUtils.isTrue(emailIsExist, BizExceptionEnum.FORGET_EMAIL_NOT_EXIST);
 
-        String sendPassword = HashUtils.getRandomSalt(8);
-        sendMailService.sendMail(account.getEmail(), "重置密码", sendPassword);
-        userService.updatePassword(HashUtils.md5(sendPassword), account.getEmail());
+        userService.updatePassword(HashUtils.md5(account.getPassword()), account.getEmail());
 
         return "redirect:/login";
     }

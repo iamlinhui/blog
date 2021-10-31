@@ -35,4 +35,8 @@ public interface Constants {
     String USER_STATUS = "userStatus";
 
     String UPLOAD_TOKEN = "UPLOAD_TOKEN";
+
+    String LOGIN_CODE_KEY = "validate_code";
+
+    String EMAIL_CODE_KEY = "email_code";
 }

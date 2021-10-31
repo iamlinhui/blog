@@ -5,10 +5,12 @@ import org.springframework.boot.autoconfigure.mail.MailProperties;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.scheduling.annotation.Async;
+import org.springframework.scheduling.annotation.AsyncResult;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
 import javax.mail.internet.MimeMessage;
+import java.util.concurrent.Future;
 
 /**
  * @author : Lynn
@@ -32,7 +34,7 @@ public class SendMailService {
      * @since v1.0.0
      */
     @Async("asyncTaskExecutor")
-    public void sendMail(String toEmail, String subject, String context) {
+    public Future<Boolean> sendMail(String toEmail, String subject, String context) {
         MimeMessage mimeMessage = javaMailSender.createMimeMessage();
         try {
             MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage, MimeMessageHelper.MULTIPART_MODE_MIXED_RELATED);
@@ -43,9 +45,10 @@ public class SendMailService {
             mimeMessageHelper.setText(context, true);
             // 发送邮件
             javaMailSender.send(mimeMessage);
+            return AsyncResult.forValue(true);
         } catch (Exception e) {
             log.warn("发送邮件{}至{}失败! {}", context, toEmail, e.getMessage());
         }
-
+        return AsyncResult.forValue(false);
     }
 }

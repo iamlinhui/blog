@@ -12,20 +12,23 @@ public enum BizExceptionEnum {
     /**
      * 账户相关
      */
-    LOGIN_ERROR              (100001, "用户名或密码错误",           "page/login"),
-    REGISTER_EMAIL_ERROR     (100002, "邮箱格式不正确",             "page/register"),
-    REGISTER_USER_NAME_EXIST (100002, "用户名已经存在",             "page/register"),
-    REGISTER_EMAIL_EXIST     (100002, "邮箱已经存在",               "page/register"),
-    FORGET_EMAIL_ERROR       (100002, "邮箱格式不正确",             "page/forget"),
-    FORGET_EMAIL_NOT_EXIST   (100002, "邮箱不存在",                 "page/forget"),
-    FORGET_CODE_ERROR        (100003, "验证码错误",                 "page/register"),
+    LOGIN_ERROR              (100001, "用户名或密码错误!",           "page/login"),
+    LOGIN_CODE_ERROR         (100001, "验证码错误!",                "page/login"),
+    EMAIL_CODE_ERROR         (100001, "邮箱验证码错误!",            "page/register"),
+    SEND_EMAIL_CODE_ERROR    (100001, "发送邮件失败!"),
+    REGISTER_EMAIL_ERROR     (100002, "邮箱格式不正确!",             "page/register"),
+    REGISTER_USER_NAME_EXIST (100002, "用户名已经存在!",             "page/register"),
+    REGISTER_EMAIL_EXIST     (100002, "邮箱已经存在!",               "page/register"),
+    FORGET_EMAIL_ERROR       (100002, "邮箱格式不正确!",             "page/forget"),
+    FORGET_EMAIL_NOT_EXIST   (100002, "邮箱不存在!",                 "page/forget"),
+    FORGET_CODE_ERROR        (100003, "验证码错误!",                 "page/register"),
     USER_NOT_LOGIN           (100100, "请先登录账号!",              "page/login"),
     FROZEN_ACCOUNT           (100004, "账号已冻结!",                "page/login"),
     FROZEN_REGISTER          (100004, "站点已禁止注册!",            "page/login"),
     ACCESS_LIMIT             (100101, "后台重地,请管理员登录后访问!","page/login"),
     INDEX_PAGE               (100102, "文章不存在!",                "redirect:/"),
     ADMIN_PAGE               (100103, "文章不存在!",                "redirect:/admin/article"),
-    SERVER_ERROR             (999999, "服务器异常");
+    SERVER_ERROR             (999999, "服务器异常!");
 
     BizExceptionEnum(int code, String message) {
         this.code = code;
