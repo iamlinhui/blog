@@ -34,7 +34,7 @@ import java.util.List;
 @Slf4j
 public class WebConfig implements WebMvcConfigurer, ErrorPageRegistrar {
 
-    @ConditionalOnProperty(prefix = "server", name = "apr", havingValue = "false")
+    @ConditionalOnProperty(prefix = "server", name = "apr", havingValue = "true")
     @Bean
     public ServletWebServerFactory servletWebServerFactory() {
         TomcatServletWebServerFactory tomcatServletWebServerFactory = new TomcatServletWebServerFactory();
