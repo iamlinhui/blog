@@ -2023,7 +2023,7 @@
             
             marked.setOptions(markedOptions);
                     
-            var newMarkdownDoc = editormd.$marked(cmValue, markedOptions);
+            var newMarkdownDoc = editormd.$marked.parse(cmValue, markedOptions);
             
             //console.info("cmValue", cmValue, newMarkdownDoc);
             
@@ -3965,9 +3965,9 @@
             smartypants : true
         };
         
-		markdownDoc = new String(markdownDoc);
-        
-        var markdownParsed = marked(markdownDoc, markedOptions);
+		markdownDoc = markdownDoc.toString();
+
+        var markdownParsed = marked.parse(markdownDoc, markedOptions);
         
         markdownParsed = editormd.filterHTMLTags(markdownParsed, settings.htmlDecode);
         
