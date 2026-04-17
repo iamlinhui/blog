@@ -5,55 +5,41 @@
 <html lang="zh-cn">
 <head>
 	<%@include file="/WEB-INF/templates/common/base.jsp"%>
-	<link href="static/css/signin.css" rel="stylesheet" type="text/css" />
-	<link href="static/css/offcanvas.css" rel="stylesheet" type="text/css" />
-	<link href="static/editor/css/editormd.css" rel="stylesheet" type="text/css"/>
-	<script src="static/editor/lib/marked.min.js"></script>
-	<script src="static/editor/lib/prettify.min.js"></script>
-	<script src="static/editor/lib/raphael.min.js"></script>
-	<script src="static/editor/lib/underscore.min.js"></script>
-	<script src="static/editor/lib/sequence-diagram.min.js"></script>
-	<script src="static/editor/lib/flowchart.min.js"></script>
-	<script src="static/editor/lib/jquery.flowchart.min.js"></script>
-	<script src="static/editor/editormd.js"></script>
+	<link href="https://cdn.jsdelivr.net/npm/vditor@3.10.7/dist/index.css" rel="stylesheet"/>
+	<script src="https://cdn.jsdelivr.net/npm/vditor@3.10.7/dist/index.min.js"></script>
 	<title>${title} - ${subtitle}</title>
 </head>
 <body>
 	<%@include file="/WEB-INF/templates/common/navigation_pages.jsp" %>
-	<%-- 容器结束 --%>
-	<div class="container">
-		<div class="row row-offcanvas row-offcanvas-right">
-			<div class="list-group" >
-				<p class="pull-right visible-xs">
-	            	<button style="width: 150px;" type="button" class="btn btn-info btn-xs" data-toggle="offcanvas">近期文章</button>
-	          	</p>
-			</div>
-	        <div class="col-xs-12 col-sm-9">
-				<c:if test="${empty pageInfo.list }">
-					<div style="font-size: 40px;font-family: 楷体; text-align: center;">暂无文章</div>
+	<div class="container py-4">
+		<div class="row g-4">
+			<div class="col-lg-8">
+				<c:if test="${empty pageInfo.list}">
+					<div class="empty-state">
+						<i class="bi bi-journal-text"></i>
+						<p>暂无文章</p>
+					</div>
 				</c:if>
-				<c:forEach var="article" items="${pageInfo.list }">
-					<div class="panel panel-info">
-					  <div class="panel-heading">
-						<a href="article/${article.id }">
-						    <h3 class="panel-title">${article.postTitle} - ${article.postExcerpt}</h3>
-						</a>
-					  </div>
-					  <c:if test="${not empty article.postContent}">
-						  <div id="panel-body" class="panel-body">
-						   <textarea style="display:none;">${article.postContent}</textarea>
-						  </div>
-					  </c:if>
-					  <div class="panel-footer">
-						  <span class="glyphicon glyphicon-calendar" aria-hidden="true">
-						  	<fmt:formatDate pattern="yyyy年MM月dd日 HH:mm:ss" value="${article.postDate}"/>
-					  	  </span>
-					  	<c:if test="${article.postAuthor == user.id }">
-					  		<a style="width: 150px;" class="btn btn-warning btn-xs navbar-right" href="admin/edit/${article.id }" role="button">
-					  			<span class="glyphicon glyphicon-pencil" aria-hidden="true">编辑</span>
-					  		</a>
-					  	</c:if>
-					  </div>
+				<c:forEach var="article" items="${pageInfo.list}">
+					<div class="card-modern">
+						<div class="card-header-modern">
+							<h3><a href="article/${article.id}">${article.postTitle}<c:if test="${not empty article.postExcerpt}"> - ${article.postExcerpt}</c:if></a></h3>
+						</div>
+						<c:if test="${not empty article.postContent}">
+							<div class="card-body-modern">
+								<div class="vditor-preview" data-content="${article.postContent}">
+									<textarea style="display:none;">${article.postContent}</textarea>
+								</div>
+							</div>
+						</c:if>
+						<div class="card-footer-modern">
+							<span><i class="bi bi-calendar3 me-1"></i><fmt:formatDate pattern="yyyy年MM月dd日 HH:mm" value="${article.postDate}"/></span>
+							<c:if test="${article.postAuthor == user.id}">
+								<a class="btn btn-outline-modern btn-sm" href="admin/edit/${article.id}">
+									<i class="bi bi-pencil me-1"></i>编辑
+								</a>
+							</c:if>
+						</div>
 					</div>
 				</c:forEach>
 				<c:if test="${not empty pageInfo.list and pageInfo.pages!=1}">
@@ -61,84 +47,65 @@
 					<%@include file="/WEB-INF/templates/common/pagebar.jsp" %>
 				</c:if>
 			</div>
-			<%--侧边框开始 --%>
-			<div class="col-xs-6 col-sm-3 sidebar-offcanvas" id="sidebar">
-			  <%--第一个侧边框开始 --%>
-	          <div class="list-group" >
-	          	<li class="list-group-item list-group-item-info"><b>近期文章</b></li>
-	            <c:forEach items="${recentlyInfo.list }" var="post">
-	            	<a href="article/${post.id}">
-	            	 <li class="list-group-item">
-<%--					    <span class="badge"><fmt:formatDate pattern="yyyy/MM/dd" value="${post.postDate }"/></span>
-					    <c:forEach items="${post.term }" var="term">
-					   	 <span class="badge">${term.name }</span>
-					    </c:forEach>--%>
-					   ${post.postTitle}
-					  </li>
-				</a>
-	            </c:forEach>
-	          </div>
-
-			  <%--第一个侧边框开始 --%>
-			  <div class="list-group" >
-				  <li class="list-group-item list-group-item-info"><b>文章分类</b></li>
-				  <c:forEach items="${terms }" var="term">
-					  <a href="classify/${term.slug }">
-					  <li class="list-group-item" role="presentation" <c:if test="${not empty slug and slug == term.slug}">class="active"</c:if> >
-						  ${term.name }
-					  </li></a>
-				  </c:forEach>
-			  </div>
-
-	   		   <%--第二个侧边框开始 --%>
-	   		  <div id="weather" class="list-group" hidden>
-	   		  	<li class="list-group-item list-group-item-info"><b>天气</b></li>
-	   		  	 <li class="list-group-item">
-		   		  	<img alt="" src="">
-	   		  	</li>
-	   		  	<li class="list-group-item">
-	   		  	</li>
-	   		  </div>
-
-	        </div>
-	        <%--侧边框结束--%>
-        </div>
-	<%@include file="/WEB-INF/templates/common/foot.jsp" %>
+			<div class="col-lg-4">
+				<div class="sidebar-card">
+					<div class="sidebar-title"><i class="bi bi-clock-history me-2"></i>近期文章</div>
+					<div class="list-group list-group-flush">
+						<c:forEach items="${recentlyInfo.list}" var="post">
+							<a href="article/${post.id}" class="list-group-item list-group-item-action">${post.postTitle}</a>
+						</c:forEach>
+					</div>
+				</div>
+				<div class="sidebar-card">
+					<div class="sidebar-title"><i class="bi bi-folder me-2"></i>文章分类</div>
+					<div class="list-group list-group-flush">
+						<c:forEach items="${terms}" var="term">
+							<a href="classify/${term.slug}" class="list-group-item list-group-item-action <c:if test='${not empty slug and slug == term.slug}'>active</c:if>">${term.name}</a>
+						</c:forEach>
+					</div>
+				</div>
+				<div id="weather" class="sidebar-card" style="display:none;">
+					<div class="sidebar-title"><i class="bi bi-cloud-sun me-2"></i>天气</div>
+					<div class="list-group list-group-flush">
+						<div class="list-group-item text-center py-3">
+							<img alt="" src="" style="max-width:64px;">
+						</div>
+						<div class="list-group-item text-center"></div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<%@include file="/WEB-INF/templates/common/foot.jsp" %>
 	</div>
-	<%--容器结束 --%>
 </body>
 <script type="text/javascript">
-    $(function () {
-
-        $('[data-toggle="offcanvas"]').click(function () {
-            $('.row-offcanvas').toggleClass('active')
-        });
-
-        $.ajax({
-            url: "weather",
-            type: "post",
-            success: function (msg) {
-                if (msg.status === 0) {
-                    $("#weather img").attr("src", "static/img/weather/" + msg.result.img + ".png");
-					$("#weather li:eq(2)").html(msg.result.city + msg.result.weather);
-                    $("#weather").show();
-                }
-            },
-            dataType: "json"
-        });
-
-        editormd.markdownToHTML("panel-body", {
-                htmlDecode: "style,script,iframe",
-                emoji: true,
-                taskList: true,
-			    atLink: false,
-                tocm: true,
-                tex: true,
-                flowChart: true,
-                sequenceDiagram: true,
-                codeFold: true
-            }
-        )
-    });
+	$(function () {
+		$.ajax({
+			url: "weather",
+			type: "post",
+			success: function (msg) {
+				if (msg.status === 0) {
+					$("#weather img").attr("src", "static/img/weather/" + msg.result.img + ".png");
+					$("#weather .list-group-item:eq(1)").html(msg.result.city + " " + msg.result.weather);
+					$("#weather").show();
+				}
+			},
+			dataType: "json"
+		});
+		// Render markdown with Vditor
+		document.querySelectorAll('.vditor-preview').forEach(function(el) {
+			var textarea = el.querySelector('textarea');
+			if (textarea) {
+				var md = textarea.value;
+				textarea.remove();
+				Vditor.preview(el, md, {
+					markdown: { toc: true },
+					hljs: { lineNumber: true },
+					math: { engine: 'KaTeX' },
+					mermaid: { enable: true }
+				});
+			}
+		});
+	});
 </script>
 </html>

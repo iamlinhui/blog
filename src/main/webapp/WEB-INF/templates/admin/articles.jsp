@@ -5,52 +5,48 @@
 <html lang="zh-cn">
 <head>
     <%@include file="/WEB-INF/templates/common/base.jsp" %>
-    <link href="static/css/signin.css" rel="stylesheet" type="text/css"/>
-    <link href="static/css/offcanvas.css" rel="stylesheet" type="text/css"/>
-    <title>${ title} - 文章管理</title>
+    <title>${title} - 文章管理</title>
 </head>
 <body>
 <%@include file="/WEB-INF/templates/common/navigator_admin.jsp" %>
-<div class="container">
-    <div class="list-group">
-        <form action="admin/delete" method="post">
-            <input type="hidden" name="pageNum" value="${pageNum}">
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    <span>所有文章</span>
-                    <input class="btn btn-xs btn-danger navbar-right" type="submit" value="删除文章" style="width: 100px;">
-                </div>
-                <div class="panel-body">
-                    <ul class="list-group">
-                        <c:forEach items="${pageInfo.list }" var="post">
-                            <li class="list-group-item">
-                                <span class="badge glyphicon glyphicon-time" aria-hidden="true">
-                                    <fmt:formatDate pattern="yy年MM月dd日 " value="${post.postDate }"/>
-                                </span>
-                                <span class="badge">
-                                    <c:if test="${post.postStatus =='publish'}">
-                                        已发布
-                                    </c:if>
-                                    <c:if test="${post.postStatus =='draft'}">
-                                        草稿
-                                    </c:if>
-                                </span>
-                                <c:forEach items="${post.term }" var="term">
-                                    <span class="badge">${term.name }</span>
-                                </c:forEach>
-                                <input value="${post.id }" id="${post.id}" type="checkbox" name="delete"/>
-                                <a href="admin/edit/${post.id}">${post.postTitle} - ${post.postExcerpt}</a>
-                            </li>
-                        </c:forEach>
-                        <c:if test="${not empty pageInfo.list and pageInfo.pages!=1 }">
-                            <c:set value="admin/article" var="targetUrl" scope="page"/>
-                            <%@include file="/WEB-INF/templates/common/pagebar.jsp" %>
-                        </c:if>
-                    </ul>
-                </div>
+<div class="container py-4">
+    <form action="admin/delete" method="post">
+        <input type="hidden" name="pageNum" value="${pageNum}">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h4 class="fw-bold mb-0"><i class="bi bi-file-text me-2"></i>所有文章</h4>
+            <button class="btn btn-danger-modern" type="submit"><i class="bi bi-trash me-1"></i>删除选中</button>
+        </div>
+        <div class="card-modern">
+            <div class="list-group list-group-flush">
+                <c:forEach items="${pageInfo.list}" var="post">
+                    <label class="list-group-item list-group-item-action d-flex align-items-center py-3" style="cursor:pointer;">
+                        <input class="form-check-input me-3 flex-shrink-0" value="${post.id}" type="checkbox" name="delete"/>
+                        <div class="flex-grow-1">
+                            <a href="admin/edit/${post.id}" class="fw-medium text-decoration-none">${post.postTitle} - ${post.postExcerpt}</a>
+                        </div>
+                        <div class="d-flex gap-2 ms-3 flex-shrink-0">
+                            <c:forEach items="${post.term}" var="term">
+                                <span class="badge-modern">${term.name}</span>
+                            </c:forEach>
+                            <c:if test="${post.postStatus == 'publish'}">
+                                <span class="badge-modern badge-status-publish">已发布</span>
+                            </c:if>
+                            <c:if test="${post.postStatus == 'draft'}">
+                                <span class="badge-modern badge-status-draft">草稿</span>
+                            </c:if>
+                            <span class="text-muted" style="font-size:.8rem;white-space:nowrap;">
+                                <fmt:formatDate pattern="yy/MM/dd" value="${post.postDate}"/>
+                            </span>
+                        </div>
+                    </label>
+                </c:forEach>
             </div>
-        </form>
-    </div>
+        </div>
+        <c:if test="${not empty pageInfo.list and pageInfo.pages!=1}">
+            <c:set value="admin/article" var="targetUrl" scope="page"/>
+            <%@include file="/WEB-INF/templates/common/pagebar.jsp" %>
+        </c:if>
+    </form>
     <%@include file="/WEB-INF/templates/common/foot.jsp" %>
 </div>
 </body>

@@ -152,7 +152,7 @@ public class AdminController {
 
     @ResponseBody
     @PostMapping(value = "/upload")
-    public UploadVO upload(@RequestParam(value = "editormd-image-file") MultipartFile multipartFile) {
+    public UploadVO upload(@RequestParam(value = "file") MultipartFile multipartFile) {
         try {
             String fileName = SnowflakeIdUtils.nextId() + Objects.requireNonNull(multipartFile.getOriginalFilename()).substring(multipartFile.getOriginalFilename().lastIndexOf("."));
             ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();

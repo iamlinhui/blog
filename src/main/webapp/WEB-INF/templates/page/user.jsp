@@ -5,157 +5,117 @@
 <html lang="zh-cn">
 <head>
 	<%@include file="/WEB-INF/templates/common/base.jsp"%>
-	<link href="static/css/dashboard.css" rel="stylesheet" type="text/css" />
-	<link href="static/css/signin.css" rel="stylesheet" type="text/css" />
-	<link href="static/css/offcanvas.css" rel="stylesheet" type="text/css" />
 	<title>${title} - 个人信息</title>
 </head>
 <body>
 <%@include file="/WEB-INF/templates/common/navigation_pages.jsp" %>
-<%--容器开始 --%>
-<div class="container">
-	<div class="list-group">
-		<div class="row">
-
-	        <div class="col-sm-3 col-md-2 sidebar">
-	          <ul class="nav nav-sidebar">
-	          	<div class="row placeholders">
-	             <div class="placeholder">
-	               <h4>${sessionScope.user.userLogin}</h4>
-	              <span class="text-muted">${sessionScope.user.userNicename}</span>
-	             </div>
-	           </div>
-	            <li class="active"><a><span class="glyphicon glyphicon-user" aria-hidden="true">&nbsp;个人信息</span></a></li>
-	          </ul>
-	        </div>
-        	<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-	           
-	        	<div class="thumbnail">
-			      <div class="caption">
-			        <h3>${sessionScope.user.userLogin}<small>(${sessionScope.user.userNicename})</small></h3>
-			        <p>注册时间:</p>
-			        <p><fmt:formatDate pattern="yyyy年MM月dd日 HH:mm:ss" value="${sessionScope.user.userRegistered}"/></p>
-			        <p>登陆邮箱:</p>
-			        <p id="email">${sessionScope.user.userEmail}</p>
-			        <p>
-			        	<button type="button" data-userid="${user.id}" class="btn btn-warning btn-sm" data-toggle="modal" data-target="#exampleModal">
-				      	  <span class="glyphicon glyphicon-pencil" aria-hidden="true">&nbsp;修改密码</span>
-				    	</button>
-			        	<button style="margin-left: 50px;" type="button" data-userid="${user.id}" data-nicename="${user.userNicename}"  class="btn btn-primary btn-sm" data-toggle="modal" data-target="#nameModal">
-				      	  <span class="glyphicon glyphicon-info-sign" aria-hidden="true">&nbsp;修改昵称</span>
-				    	</button>
-			        </p>
-			      </div>
-			    </div>
-          		
-        	</div><%--col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main --%>
-      	</div><%--<div class="row">结束 --%>
-	</div><%--<div class="list-group">结束 --%>
+<div class="container py-4">
+	<div class="row justify-content-center">
+		<div class="col-lg-8">
+			<div class="card-modern">
+				<div class="card-header-modern">
+					<h3><i class="bi bi-person-circle me-2"></i>个人信息</h3>
+				</div>
+				<div class="card-body-modern">
+					<div class="row mb-3">
+						<div class="col-sm-3 text-muted fw-medium">用户名</div>
+						<div class="col-sm-9">${sessionScope.user.userLogin}</div>
+					</div>
+					<div class="row mb-3">
+						<div class="col-sm-3 text-muted fw-medium">昵称</div>
+						<div class="col-sm-9">${sessionScope.user.userNicename}</div>
+					</div>
+					<div class="row mb-3">
+						<div class="col-sm-3 text-muted fw-medium">注册时间</div>
+						<div class="col-sm-9"><fmt:formatDate pattern="yyyy年MM月dd日 HH:mm:ss" value="${sessionScope.user.userRegistered}"/></div>
+					</div>
+					<div class="row mb-3">
+						<div class="col-sm-3 text-muted fw-medium">邮箱</div>
+						<div class="col-sm-9" id="email">${sessionScope.user.userEmail}</div>
+					</div>
+					<div class="d-flex gap-3 mt-4">
+						<button type="button" class="btn btn-modern" data-bs-toggle="modal" data-bs-target="#exampleModal">
+							<i class="bi bi-key me-1"></i>修改密码
+						</button>
+						<button type="button" class="btn btn-outline-modern" data-bs-toggle="modal" data-bs-target="#nameModal">
+							<i class="bi bi-pencil me-1"></i>修改昵称
+						</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 	<%@include file="/WEB-INF/templates/common/foot.jsp" %>
 </div>
-<%--容器结束 --%>
-<%--模态框开始 --%>
-<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
-  <div class="modal-dialog" role="document">
+<!-- 修改密码 Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title">修改密码</h4>
+        <h5 class="modal-title">修改密码</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
-      <div class="modal-body">
-        <form id="modifyPsw" action="user" method="post">
-          <div class="form-group">
-            <label for="password" class="control-label">新的密码:</label>
+      <form id="modifyPsw" action="user" method="post">
+        <div class="modal-body form-modern">
+          <div class="mb-3">
+            <label for="password" class="form-label">新的密码</label>
             <input type="password" class="form-control" id="password" name="password" required/>
           </div>
-          <div class="form-group">
-            <label for="repassword" class="control-label">确认密码:</label>
-            <input type="password" class="form-control" id="repassword" name="repassword"  required/>
+          <div class="mb-3">
+            <label for="repassword" class="form-label">确认密码</label>
+            <input type="password" class="form-control" id="repassword" name="repassword" required/>
           </div>
-	      <div class="modal-footer">
-	        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-	        <button type="submit" class="btn btn-primary">提交</button>
-	      </div>
-        </form>
-      </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">关闭</button>
+          <button type="submit" class="btn btn-modern">提交</button>
+        </div>
+      </form>
     </div>
   </div>
 </div>
-<%--模态框结束 --%>
-<%--模态框开始 --%>
-<div class="modal fade" id="nameModal" tabindex="-1" role="dialog" aria-labelledby="nameModal">
-  <div class="modal-dialog" role="document">
+<!-- 修改昵称 Modal -->
+<div class="modal fade" id="nameModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title">修改昵称</h4>
+        <h5 class="modal-title">修改昵称</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
-      <div class="modal-body">
-        <form action="user" method="post">
-          <div class="form-group">
-            <label for="userNiceName" class="control-label">新的昵称:</label>
+      <form action="user" method="post">
+        <div class="modal-body form-modern">
+          <div class="mb-3">
+            <label for="userNiceName" class="form-label">新的昵称</label>
             <input value="${sessionScope.user.userNicename}" type="text" class="form-control" id="userNiceName" name="userNiceName" required/>
           </div>
-	      <div class="modal-footer">
-	        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-	        <button type="submit" class="btn btn-primary">提交</button>
-	      </div>
-        </form>
-      </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">关闭</button>
+          <button type="submit" class="btn btn-modern">提交</button>
+        </div>
+      </form>
     </div>
   </div>
 </div>
-<%--模态框结束 --%>
 </body>
 <script type="text/javascript">
 $(function () {
-	$('#modifyPsw').bootstrapValidator({
-		feedbackIcons: {
-			valid: 'glyphicon glyphicon-ok',
-			invalid: 'glyphicon glyphicon-remove',
-			validating: 'glyphicon glyphicon-refresh'
-		},
-		fields: {
-			password: {
-				message: '密码无效',
-				validators: {
-					notEmpty: {
-						message: '密码不能为空'
-					},
-					stringLength: {
-						min: 6,
-						max: 30,
-						message: '密码长度必须在6到30之间'
-					},
-					regexp: {
-						regexp: /^[a-zA-Z0-9_.]+$/,
-						message: '密码格式不正确'
-					}
-				}
-			},
-			repassword: {
-				message: '密码无效',
-				validators: {
-					notEmpty: {
-						message: '确认密码不能为空'
-					},
-					stringLength: {
-						min: 6,
-						max: 30,
-						message: '长度必须在6到30之间'
-					},
-					identical: {//相同
-						field: 'password',
-						message: '两次密码不一致'
-					},
-					regexp: {//匹配规则
-						regexp: /^[a-zA-Z0-9_.]+$/,
-						message: '密码格式不正确'
-					}
-				}
-			}
+	$('#modifyPsw').on('submit', function(e) {
+		var pw = $('#password').val();
+		var rpw = $('#repassword').val();
+		if (pw.length < 6 || pw.length > 30) {
+			alert('密码长度必须在6到30之间');
+			e.preventDefault(); return false;
 		}
-	})
+		if (pw !== rpw) {
+			alert('两次密码不一致');
+			e.preventDefault(); return false;
+		}
+		if (!/^[a-zA-Z0-9_.]+$/.test(pw)) {
+			alert('密码格式不正确');
+			e.preventDefault(); return false;
+		}
+	});
 });
 </script>
 </html>

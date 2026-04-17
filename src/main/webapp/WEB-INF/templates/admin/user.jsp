@@ -3,118 +3,103 @@
 <%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <!DOCTYPE html>
 <html lang="zh-cn">
+<head>
 	<%@include file="/WEB-INF/templates/common/base.jsp"%>
-	<link href="static/css/signin.css" rel="stylesheet" type="text/css" />
-	<link href="static/css/offcanvas.css" rel="stylesheet" type="text/css" />
-	<title>${title } - 用户管理</title>
+	<title>${title} - 用户管理</title>
 </head>
 <body>
 <%@include file="/WEB-INF/templates/common/navigator_admin.jsp" %>
-	<%--巨幕开始 --%>
-	<div class="container">
-		<div class="list-group">
-			<div class="table-responsive">
-			    <table class="table table-bordered table-striped table-hover" >
-			      <thead>
-			        <tr class="info">
-			          <th></th>
-			          <th>用户登陆名<small>(不可修改)</small></th>
-			          <th>昵称</th>
-			          <th>邮箱</th>
-			          <th>注册时间</th>
-			          <th>角色</th>
-			          <th>修改</th>
-			        </tr>
-			      </thead>
-			      <tbody>
-			      	<c:forEach items="${userList }" var="user" varStatus="i">
-				        <tr>
-				          <th class="text-nowrap" scope="row">${i.count}</th>
-				          <td>${user.userLogin }</td>
-				          <td>${user.userNicename }</td>
-				          <td>${user.userEmail}</td>
-				          <td><fmt:formatDate pattern="yyyy年MM月dd日HH:mm:ss" value="${user.userRegistered}"/></td>
-				          <td>
-							  <c:if test="${user.userStatus==0}">管理员</c:if>
-							  <c:if test="${user.userStatus==1}">普通会员</c:if>
-							  <c:if test="${user.userStatus==2}">已冻结</c:if>
-				          </td>
-				         <td>
-				          	<button type="button" data-status="${user.userStatus }" data-userid="${user.id}" data-nicename="${user.userNicename}" data-loginname="${user.userLogin}" class="btn btn-info btn-sm" data-toggle="modal" data-target="#exampleModal">
-				          	<span class="glyphicon glyphicon-pencil" aria-hidden="true">修改</span>
-				          	</button>
-				          </td>
-				        </tr>
-			        </c:forEach>
-			      </tbody>
-			    </table>
-			  </div>
-		</div>
-		<%@include file="/WEB-INF/templates/common/foot.jsp" %>
+<div class="container py-4">
+	<h4 class="fw-bold mb-4"><i class="bi bi-people me-2"></i>用户管理</h4>
+	<div class="table-modern">
+		<table class="table table-hover mb-0">
+			<thead>
+				<tr>
+					<th>#</th>
+					<th>用户名 <small class="text-muted">(不可修改)</small></th>
+					<th>昵称</th>
+					<th>邮箱</th>
+					<th>注册时间</th>
+					<th>角色</th>
+					<th>操作</th>
+				</tr>
+			</thead>
+			<tbody>
+				<c:forEach items="${userList}" var="user" varStatus="i">
+					<tr>
+						<th scope="row">${i.count}</th>
+						<td>${user.userLogin}</td>
+						<td>${user.userNicename}</td>
+						<td>${user.userEmail}</td>
+						<td><fmt:formatDate pattern="yyyy-MM-dd HH:mm" value="${user.userRegistered}"/></td>
+						<td>
+							<c:if test="${user.userStatus==0}"><span class="badge-modern">管理员</span></c:if>
+							<c:if test="${user.userStatus==1}"><span class="badge-modern badge-status-publish">普通会员</span></c:if>
+							<c:if test="${user.userStatus==2}"><span class="badge-modern badge-status-draft">已冻结</span></c:if>
+						</td>
+						<td>
+							<button type="button" data-status="${user.userStatus}" data-userid="${user.id}" data-nicename="${user.userNicename}" data-loginname="${user.userLogin}" class="btn btn-sm btn-outline-modern" data-bs-toggle="modal" data-bs-target="#exampleModal">
+								<i class="bi bi-pencil"></i>
+							</button>
+						</td>
+					</tr>
+				</c:forEach>
+			</tbody>
+		</table>
 	</div>
-<%--巨幕结束 --%>
-<%--模态框开始 --%>
-<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
-  <div class="modal-dialog" role="document">
+	<%@include file="/WEB-INF/templates/common/foot.jsp" %>
+</div>
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="exampleModalLabel"></h4>
+        <h5 class="modal-title" id="exampleModalLabel"></h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
-      <div class="modal-body">
-        <form action="admin/user" method="post">
+      <form action="admin/user" method="post">
+        <div class="modal-body form-modern">
           <input id="userId" type="hidden" name="id" value="">
-          <div class="form-group">
-            <label for="recipient-name" class="control-label">修改别名:</label>
+          <div class="mb-3">
+            <label for="recipient-name" class="form-label">修改别名</label>
             <input type="text" class="form-control" id="recipient-name" name="userNicename" required/>
           </div>
-          <div class="form-group">
-          	<label for="form-control" class="control-label">角色</label>
-            <select id="form-control" name="userStatus" class="form-control">
-			  <option value="0" >管理员</option>
-			  <option value="1" >普通用户</option>
-			  <option value="2" >冻结用户</option>
-			</select>
+          <div class="mb-3">
+            <label for="form-control" class="form-label">角色</label>
+            <select id="form-control" name="userStatus" class="form-select">
+              <option value="0">管理员</option>
+              <option value="1">普通用户</option>
+              <option value="2">冻结用户</option>
+            </select>
           </div>
-	      <div class="modal-footer">
-	        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-	        <button type="submit" class="btn btn-primary">提交</button>
-	      </div>
-        </form>
-      </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">关闭</button>
+          <button type="submit" class="btn btn-modern">提交</button>
+        </div>
+      </form>
     </div>
   </div>
 </div>
-<%--模态框结束 --%>
 </body>
 <script type="text/javascript">
-$('#exampleModal').on('show.bs.modal', function (event) {
+var userModal = document.getElementById('exampleModal');
+userModal.addEventListener('show.bs.modal', function (event) {
 	$("#recipient-name").val("");
-	$("#exampleModalLabel").val("");
+	$("#exampleModalLabel").text("");
 	$("#userId").attr("value","");
-	$("select :eq(0)").prop("selected",false);
-	$("select :eq(1)").prop("selected",false);
-	$("select :eq(2)").prop("selected",false);
+	$("#form-control").val("0");
 
-	  var button = $(event.relatedTarget);
-	  var userid = button.data('userid');
-	  var nicename = button.data('nicename');
-	  var loginname = button.data('loginname');
-	  var status = button.data('status');
-	  
-	  var modal = $(this);
-	  modal.find('.modal-title').text("修改用户"+loginname+"的信息");
-	  $("#userId").attr("value",userid);
-	  $("#recipient-name").val(nicename);
-	  
-	  if(status===0){
-		  $("select :eq(0)").prop("selected",true);
-	  }else if (status===1){
-		  $("select :eq(1)").prop("selected",true);
-	  }else if (status===2){
-		  $("select :eq(2)").prop("selected",true);
-	  }
-	  
-	});
+	var button = $(event.relatedTarget);
+	var userid = button.data('userid');
+	var nicename = button.data('nicename');
+	var loginname = button.data('loginname');
+	var status = button.data('status');
+
+	$(this).find('.modal-title').text("修改用户" + loginname + "的信息");
+	$("#userId").attr("value", userid);
+	$("#recipient-name").val(nicename);
+	$("#form-control").val(String(status));
+});
 </script>
 </html>
