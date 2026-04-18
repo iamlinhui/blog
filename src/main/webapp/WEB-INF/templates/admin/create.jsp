@@ -42,13 +42,20 @@
                     </div>
                     <div class="col">
                         <label class="form-label">文章分类</label>
-                        <div class="d-flex flex-wrap gap-3">
-                            <c:forEach items="${terms}" var="term">
-                                <div class="form-check">
-                                    <input class="form-check-input" value="${term.termId}" id="terms${term.termId}" type="checkbox" name="termId">
-                                    <label class="form-check-label" for="terms${term.termId}">${term.name}</label>
-                                </div>
-                            </c:forEach>
+                        <div class="tag-select-wrap">
+                            <div class="tag-select-trigger form-control" onclick="this.parentNode.classList.toggle('open')">
+                                <span class="tag-select-placeholder">请选择分类...</span>
+                                <i class="bi bi-chevron-down"></i>
+                            </div>
+                            <div class="tag-select-dropdown">
+                                <c:forEach items="${terms}" var="term">
+                                    <label class="tag-select-option">
+                                        <input type="checkbox" name="termId" value="${term.termId}" onchange="updateSelectedTags(this.closest('.tag-select-wrap'))">
+                                        <span>${term.name}</span>
+                                    </label>
+                                </c:forEach>
+                            </div>
+                            <div class="tag-selected-list d-flex flex-wrap gap-2 mt-2"></div>
                         </div>
                     </div>
                 </div>
@@ -63,5 +70,34 @@
     </div>
     <%@include file="/WEB-INF/templates/common/foot.jsp" %>
 </div>
+<script>
+function updateSelectedTags(wrap) {
+    var list = wrap.querySelector('.tag-selected-list');
+    var placeholder = wrap.querySelector('.tag-select-placeholder');
+    var checks = wrap.querySelectorAll('input[type=checkbox]');
+    list.innerHTML = '';
+    var count = 0;
+    checks.forEach(function(cb) {
+        if (cb.checked) {
+            count++;
+            var chip = document.createElement('span');
+            chip.className = 'tag-chip';
+            chip.innerHTML = cb.nextElementSibling.textContent + '<i class="bi bi-x tag-remove"></i>';
+            chip.querySelector('.tag-remove').onclick = function() {
+                cb.checked = false;
+                updateSelectedTags(wrap);
+            };
+            list.appendChild(chip);
+        }
+    });
+    placeholder.textContent = count > 0 ? '已选择 ' + count + ' 个分类' : '请选择分类...';
+}
+document.addEventListener('click', function(e) {
+    document.querySelectorAll('.tag-select-wrap.open').forEach(function(w) {
+        if (!w.contains(e.target)) w.classList.remove('open');
+    });
+});
+document.querySelectorAll('.tag-select-wrap').forEach(function(w) { updateSelectedTags(w); });
+</script>
 </body>
 </html>
