@@ -1,6 +1,6 @@
 $(function () {
     $("#captcha-image").on('click', function () {
-        $("#captcha-image").attr('src', '/code.jpg?' + Math.floor(Math.random() * 100)).fadeIn();
+        $("#captcha-image").attr('src', 'code.jpg?' + Math.floor(Math.random() * 100)).fadeIn();
     });
     $("#getCode").on('click', function () {
         let obj = $(this);
@@ -37,7 +37,7 @@ $(function () {
 function getEmailCode(email) {
     const index = layer.load(1);
     $.ajax({
-        url: '/email?email=' + email,
+        url: 'email?email=' + email,
         type: "POST",
         success: function (msg) {
             layer.close(index);
