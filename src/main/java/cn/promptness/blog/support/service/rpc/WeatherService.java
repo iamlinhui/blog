@@ -1,12 +1,9 @@
 package cn.promptness.blog.support.service.rpc;
 
 import cn.promptness.blog.common.constant.Constants;
-import cn.promptness.blog.common.utils.HttpClientUtils;
 import cn.promptness.blog.support.service.OptionsService;
-import cn.promptness.blog.vo.HttpResult;
-import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.Lists;
-import org.apache.http.message.BasicHeader;
+import cn.promptness.httpclient.core.DefaultHttpClient;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
@@ -18,17 +15,20 @@ import javax.annotation.Resource;
  * @since v1.0.0
  */
 @Service
+@Slf4j
 public class WeatherService {
 
     @Resource
-    private HttpClientUtils httpClientUtil;
+    private DefaultHttpClient httpClientUtil;
     @Resource
     private OptionsService optionsService;
 
     @Cacheable(value = "weatherCache", key = "'weather' + #ip")
-    public String getWeather(String ip) throws Exception {
-        BasicHeader basicHeader = new BasicHeader("Authorization", "APPCODE " + optionsService.getOption(Constants.APPCODE));
-        HttpResult httpResult = httpClientUtil.doGet("https://jisutqybmf.market.alicloudapi.com/weather/query", ImmutableMap.of("ip", ip), Lists.newArrayList(basicHeader));
-        return httpResult.getMessage();
+    public String getWeather(String ip) {
+        String appCode = optionsService.getOption(Constants.APPCODE);
+        return httpClientUtil.get("https://jisutqybmf.market.alicloudapi.com/weather/query")
+                .addHeader("Authorization", "APPCODE " + appCode)
+                .addParam("ip", ip)
+                .execute().getMessage();
     }
 }

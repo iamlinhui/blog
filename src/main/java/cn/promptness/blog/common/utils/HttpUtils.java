@@ -45,8 +45,11 @@ public class HttpUtils {
      */
     public static String getIp() {
         String ip = HttpUtils.getRequest().getHeader("x-forwarded-for");
-        if (ip == null || ip.length() == 0) {
+        if (ip == null || ip.isEmpty()) {
             ip = HttpUtils.getRequest().getRemoteAddr();
+        }
+        if (ip != null && ip.indexOf(":") > 0) {
+            ip = ip.substring(0, ip.indexOf(":"));
         }
         return ip;
     }
