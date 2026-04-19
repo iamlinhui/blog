@@ -27,8 +27,11 @@
 						</div>
 						<c:if test="${not empty article.postContent}">
 							<div class="card-body-modern">
-								<div class="vditor-preview" data-content="${article.postContent}">
-									<textarea style="display:none;">${article.postContent}</textarea>
+								<div class="vditor-preview" style="display:none; opacity:0; transition:opacity 0.3s ease;">
+									<script type="text/markdown">${article.postContent}</script>
+								</div>
+								<div class="md-loading" style="padding:20px; text-align:center; color:#aaa;">
+									<i class="bi bi-arrow-repeat spin"></i> 加载中...
 								</div>
 							</div>
 						</c:if>
@@ -94,15 +97,25 @@
 		});
 		// Render markdown with Vditor
 		document.querySelectorAll('.vditor-preview').forEach(function(el) {
-			var textarea = el.querySelector('textarea');
-			if (textarea) {
-				var md = textarea.value;
-				textarea.remove();
+			var scriptTag = el.querySelector('script[type="text/markdown"]');
+			if (scriptTag) {
+				var md = scriptTag.textContent;
+				scriptTag.remove();
 				Vditor.preview(el, md, {
 					markdown: { toc: true },
 					hljs: { lineNumber: true },
 					math: { engine: 'KaTeX' },
-					mermaid: { enable: true }
+					mermaid: { enable: true },
+					after: function() {
+						setTimeout(function() {
+							var loading = el.parentNode.querySelector('.md-loading');
+							if (loading) loading.remove();
+							el.style.display = '';
+							// trigger reflow then fade in
+							el.offsetHeight;
+							el.style.opacity = '1';
+						}, 300);
+					}
 				});
 			}
 		});

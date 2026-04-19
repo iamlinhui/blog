@@ -19,8 +19,11 @@
 						<h3>${article.postTitle}<c:if test="${not empty article.postExcerpt}"> - ${article.postExcerpt}</c:if></h3>
 					</div>
 					<div class="card-body-modern">
-						<div id="panel-body">
-							<textarea style="display:none;">${article.postContent}</textarea>
+						<div id="panel-body" style="display:none; opacity:0; transition:opacity 0.3s ease;">
+							<script type="text/markdown">${article.postContent}</script>
+						</div>
+						<div class="md-loading" style="padding:40px; text-align:center; color:#aaa;">
+							<i class="bi bi-arrow-repeat spin"></i> 加载中...
 						</div>
 					</div>
 					<div class="card-footer-modern">
@@ -54,15 +57,24 @@
 <script>
 	$(function () {
 		var el = document.getElementById('panel-body');
-		var textarea = el.querySelector('textarea');
-		if (textarea) {
-			var md = textarea.value;
-			textarea.remove();
+		var scriptTag = el.querySelector('script[type="text/markdown"]');
+		if (scriptTag) {
+			var md = scriptTag.textContent;
+			scriptTag.remove();
 			Vditor.preview(el, md, {
 				markdown: { toc: true },
 				hljs: { lineNumber: true },
 				math: { engine: 'KaTeX' },
-				mermaid: { enable: true }
+				mermaid: { enable: true },
+				after: function() {
+					setTimeout(function() {
+						var loading = el.parentNode.querySelector('.md-loading');
+						if (loading) loading.remove();
+						el.style.display = '';
+						el.offsetHeight;
+						el.style.opacity = '1';
+					}, 300);
+				}
 			});
 		}
 	});

@@ -1,4 +1,9 @@
 /* Modern SaaS Blog Theme */
+/* Loading spinner */
+@keyframes spin { to { transform: rotate(360deg); } }
+.spin { display: inline-block; animation: spin 1s linear infinite; }
+.md-loading { min-height: 60px; }
+
 :root {
     --primary: #6366f1;
     --primary-light: #818cf8;
