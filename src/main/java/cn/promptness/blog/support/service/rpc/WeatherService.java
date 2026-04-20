@@ -2,7 +2,7 @@ package cn.promptness.blog.support.service.rpc;
 
 import cn.promptness.blog.common.constant.Constants;
 import cn.promptness.blog.support.service.OptionsService;
-import cn.promptness.httpclient.core.DefaultHttpClient;
+import io.github.promptness.httpclient.core.DefaultHttpClient;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;

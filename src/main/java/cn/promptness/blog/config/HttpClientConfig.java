@@ -1,7 +1,7 @@
 package cn.promptness.blog.config;
 
-import cn.promptness.httpclient.HttpClientProperties;
-import cn.promptness.httpclient.core.DefaultHttpClient;
+import io.github.promptness.httpclient.HttpClientProperties;
+import io.github.promptness.httpclient.core.DefaultHttpClient;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

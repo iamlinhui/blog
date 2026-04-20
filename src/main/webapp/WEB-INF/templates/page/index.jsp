@@ -101,20 +101,32 @@
 			if (scriptTag) {
 				var md = scriptTag.textContent;
 				scriptTag.remove();
-				Vditor.preview(el, md, {
+				var offscreen = document.createElement('div');
+				offscreen.style.cssText = 'position:fixed;left:-9999px;top:0;visibility:hidden;width:' + el.parentNode.offsetWidth + 'px;';
+				document.body.appendChild(offscreen);
+				Vditor.preview(offscreen, md, {
 					markdown: { toc: true },
 					hljs: { lineNumber: true },
 					math: { engine: 'KaTeX' },
 					mermaid: { enable: true },
 					after: function() {
-						setTimeout(function() {
+						var timer = null;
+						var observer = new MutationObserver(function() {
+							clearTimeout(timer);
+							timer = setTimeout(show, 500);
+						});
+						observer.observe(offscreen, { childList: true, subtree: true, attributes: true, characterData: true });
+						timer = setTimeout(show, 500);
+						function show() {
+							observer.disconnect();
+							el.innerHTML = offscreen.innerHTML;
+							offscreen.remove();
 							var loading = el.parentNode.querySelector('.md-loading');
 							if (loading) loading.remove();
 							el.style.display = '';
-							// trigger reflow then fade in
 							el.offsetHeight;
 							el.style.opacity = '1';
-						}, 300);
+						}
 					}
 				});
 			}
