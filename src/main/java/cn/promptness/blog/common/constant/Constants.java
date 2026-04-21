@@ -30,6 +30,12 @@ public interface Constants {
 
     String COMMENT_ID = "commentId";
 
+    String GISCUS_REPO_ID = "giscusRepoId";
+
+    String GISCUS_CATEGORY_ID = "giscusCategoryId";
+
+    String ICP = "icp";
+
     String APPCODE = "appcode";
 
     String USER_STATUS = "userStatus";

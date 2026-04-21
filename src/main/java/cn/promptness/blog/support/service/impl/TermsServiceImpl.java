@@ -50,35 +50,10 @@ public class TermsServiceImpl implements TermsService {
     @Transactional(rollbackFor = Exception.class)
     @CacheEvict(value = "termsCache", allEntries = true)
     @Override
-    public void upTerms(long thisTermsId) {
-        //1).查找当前termsId的termsOrder值
-        long thisTermsOrder = termsMapper.selectTermsOrderByTermsId(thisTermsId);
-        //2).根据thisTermsOrder查找需要交换的目标的id
-        long targetTermsId = termsMapper.selectUpTargetTermsId(thisTermsOrder);
-        //3).根据targetTermsId查找targetTerms的termsOrder
-        long targetTermsOrder = termsMapper.selectTermsOrderByTermsId(targetTermsId);
-        //4).更新thisTerms的termsOrder
-        termsMapper.updateTermsOrderByTermsId(thisTermsId, targetTermsOrder);
-        //5).更新targetTerms的termsOrder
-        termsMapper.updateTermsOrderByTermsId(targetTermsId, thisTermsOrder);
-
-    }
-
-    @Transactional(rollbackFor = Exception.class)
-    @CacheEvict(value = "termsCache", allEntries = true)
-    @Override
-    public void downTerms(long thisTermsId) {
-        //1).查找当前termsId的termsOrder值
-        long thisTermsOrder = termsMapper.selectTermsOrderByTermsId(thisTermsId);
-        //2).根据thisTermsOrder查找需要交换的目标的id
-        long targetTermsId = termsMapper.selectDownTargetTermsId(thisTermsOrder);
-        //3).根据targetTermsId查找targetTerms的termsOrder
-        long targetTermsOrder = termsMapper.selectTermsOrderByTermsId(targetTermsId);
-        //4).更新thisTerms的termsOrder
-        termsMapper.updateTermsOrderByTermsId(thisTermsId, targetTermsOrder);
-        //5).更新targetTerms的termsOrder
-        termsMapper.updateTermsOrderByTermsId(targetTermsId, thisTermsOrder);
-
+    public void reorderTerms(List<Integer> termIds) {
+        for (int i = 0; i < termIds.size(); i++) {
+            termsMapper.updateTermsOrderByTermsId(Long.valueOf(termIds.get(i)), (long) (i + 1));
+        }
     }
 
     @Cacheable(value = "termsCache", key = "'getNameBySlug' + #slug")

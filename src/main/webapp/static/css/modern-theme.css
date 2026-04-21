@@ -309,6 +309,77 @@ body {
     to { opacity: 1; transform: scale(1); }
 }
 
+/* Tag Picker (+ button style) */
+.tag-picker { position: relative; }
+.tag-add-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    border: 1.5px dashed var(--border);
+    background: transparent;
+    color: var(--text-muted);
+    font-size: .7rem;
+    cursor: pointer;
+    transition: all .2s;
+    vertical-align: middle;
+    margin-left: .35rem;
+    padding: 0;
+}
+.tag-add-btn:hover {
+    border-color: var(--primary);
+    color: var(--primary);
+    background: rgba(99,102,241,.05);
+}
+.tag-picker-menu {
+    display: none;
+    position: absolute;
+    top: calc(100% + 6px);
+    left: 0;
+    z-index: 20;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    box-shadow: var(--shadow-md);
+    min-width: 180px;
+    max-height: 220px;
+    overflow-y: auto;
+    padding: .375rem 0;
+}
+.tag-picker-menu.show { display: block; }
+.tag-picker-item {
+    display: flex;
+    align-items: center;
+    gap: .5rem;
+    padding: .5rem .875rem;
+    cursor: pointer;
+    font-size: .875rem;
+    color: var(--text);
+    transition: background .15s;
+    margin: 0;
+    user-select: none;
+}
+.tag-picker-item:hover { background: rgba(99,102,241,.05); }
+.tag-picker-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--border);
+    flex-shrink: 0;
+    transition: background .2s;
+}
+.tag-picker-item.selected .tag-picker-dot { background: var(--primary); }
+.tag-picker-check {
+    margin-left: auto;
+    font-size: .8rem;
+    color: var(--primary);
+    opacity: 0;
+    transition: opacity .15s;
+}
+.tag-picker-item.selected .tag-picker-check { opacity: 1; }
+
 /* Search */
 .search-modern {
     position: relative;
@@ -354,6 +425,19 @@ body {
     transition: all .2s;
 }
 .form-modern .form-control:focus {
+    border-color: var(--primary-light);
+    box-shadow: 0 0 0 3px rgba(99,102,241,.1);
+}
+.form-modern .form-select {
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--border);
+    padding: .625rem 2rem .625rem 1rem;
+    font-size: .9rem;
+    transition: all .2s;
+    background-color: #fff;
+    color: var(--text);
+}
+.form-modern .form-select:focus {
     border-color: var(--primary-light);
     box-shadow: 0 0 0 3px rgba(99,102,241,.1);
 }

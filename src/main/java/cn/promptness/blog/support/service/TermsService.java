@@ -14,9 +14,7 @@ public interface TermsService {
 
 	void deleteTermsById(long termId);
 
-	void upTerms(long parse);
-
-	void downTerms(long parse);
+	void reorderTerms(List<Integer> termIds);
 
 	String getNameBySlug(String slug);
 

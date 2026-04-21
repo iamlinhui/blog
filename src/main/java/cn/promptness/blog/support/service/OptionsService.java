@@ -11,7 +11,6 @@ public interface OptionsService {
 
 	void bathSaveOptions(Map<String, String> options);
 
-
     List<Options> listOptions();
 
 }

@@ -5,6 +5,7 @@ import cn.promptness.blog.common.constant.Constants;
 import cn.promptness.blog.common.constant.enums.UserStateEnum;
 import cn.promptness.blog.common.utils.AssertUtils;
 import cn.promptness.blog.common.utils.BindUtils;
+import cn.promptness.blog.common.utils.EmailUtils;
 import cn.promptness.blog.common.utils.HashUtils;
 import cn.promptness.blog.common.utils.HttpUtils;
 import cn.promptness.blog.exception.BizExceptionEnum;
@@ -13,7 +14,7 @@ import cn.promptness.blog.support.service.OptionsService;
 import cn.promptness.blog.support.service.UserService;
 import cn.promptness.blog.support.service.rpc.SendMailService;
 import cn.promptness.blog.vo.AccountVO;
-import cn.promptness.blog.vo.HttpResult;
+import cn.promptness.blog.vo.HttpResultVO;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.annotation.Validated;
@@ -84,20 +85,22 @@ public class UserController {
 
     @ResponseBody
     @PostMapping(value = "/email")
-    public HttpResult email(@Validated(value = {AccountVO.EmailCode.class}) AccountVO account) throws Exception {
+    public HttpResultVO email(@Validated(value = {AccountVO.EmailCode.class}) AccountVO account) throws Exception {
 
         UserStateEnum userStateEnum = UserStateEnum.getInstance(Integer.parseInt(optionsService.getOption(Constants.USER_STATUS)));
         AssertUtils.isFalse(UserStateEnum.FROZEN.equals(userStateEnum), BizExceptionEnum.FROZEN_REGISTER);
 
         // 生成邮箱验证码
         String emailCode = HashUtils.getRandomSalt(8);
+        // 渲染邮件模板
+        String htmlContent = EmailUtils.renderTemplate("/WEB-INF/templates/common/email.jsp", "邮箱验证码", emailCode);
         // 发送验证码到邮箱
-        Boolean result = sendMailService.sendMail(account.getEmail(), "邮箱验证码", emailCode).get();
+        Boolean result = sendMailService.sendMail(account.getEmail(), "邮箱验证码", htmlContent).get();
         AssertUtils.isTrue(result, BizExceptionEnum.SEND_EMAIL_CODE_ERROR);
 
         HttpUtils.getRequest().getSession().setAttribute(Constants.EMAIL_CODE_KEY, emailCode + account.getEmail());
 
-        return HttpResult.SUCCESS;
+        return HttpResultVO.SUCCESS;
     }
 
     /**
@@ -187,5 +190,6 @@ public class UserController {
 
         return "redirect:/user";
     }
+
 
 }

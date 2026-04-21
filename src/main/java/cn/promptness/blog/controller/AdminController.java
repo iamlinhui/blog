@@ -12,7 +12,8 @@ import cn.promptness.blog.pojo.Users;
 import cn.promptness.blog.support.service.PostsService;
 import cn.promptness.blog.support.service.TermsService;
 import cn.promptness.blog.support.service.UserService;
-import cn.promptness.blog.vo.HttpResult;
+import cn.promptness.blog.vo.ArticleFilterVO;
+import cn.promptness.blog.vo.HttpResultVO;
 import cn.promptness.blog.vo.PostsVO;
 import cn.promptness.blog.vo.UploadVO;
 import com.github.pagehelper.PageInfo;
@@ -54,8 +55,8 @@ public class AdminController {
      * 到后台页面
      */
     @GetMapping(value = "/article")
-    public String toAdminPage(Model model) {
-        return toArticlePage(model, 1);
+    public String toAdminPage(Model model, ArticleFilterVO filter) {
+        return toArticlePage(model, 1, filter);
     }
 
     /**
@@ -87,13 +88,15 @@ public class AdminController {
     }
 
     /**
-     * 展示所有文章
+     * 展示所有文章(带筛选)
      */
     @GetMapping(value = "/article/{pageNum:.+}")
-    public String toArticlePage(Model model, @PathVariable Integer pageNum) {
-        //不带文章内容的查询
-        PageInfo<Posts> pageInfo = postsService.getArticlesWithTerms(null, pageNum, 20, 8);
+    public String toArticlePage(Model model, @PathVariable Integer pageNum, ArticleFilterVO filter) {
+        PageInfo<Posts> pageInfo = postsService.getArticlesWithTermsFiltered(
+                filter.getStatus(), filter.getSlug(), filter.getDateFrom(), filter.getDateTo(),
+                pageNum, 20, 8);
         model.addAttribute(Constants.PAGE_INFO, pageInfo);
+        model.addAttribute("filter", filter);
         return "admin/articles";
     }
 
@@ -168,7 +171,7 @@ public class AdminController {
 
     @RequestMapping(value = "/continue", method = RequestMethod.OPTIONS)
     @ResponseBody
-    public HttpResult continueSession() {
-        return HttpResult.SUCCESS;
+    public HttpResultVO continueSession() {
+        return HttpResultVO.SUCCESS;
     }
 }

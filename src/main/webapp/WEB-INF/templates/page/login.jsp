@@ -27,9 +27,9 @@
             <div class="mb-3">
                 <label class="form-label">验证码</label>
                 <div class="input-group">
-                    <input pattern="^\d{4}$" maxlength="4" name="loginCode" class="form-control" type="text" placeholder="请输入验证码" autocomplete="off" required/>
+                    <input maxlength="5" name="loginCode" class="form-control" type="text" placeholder="请输入验证码" autocomplete="off" required/>
                     <span class="input-group-text p-0" style="cursor:pointer;overflow:hidden;">
-                        <img height="38" id="captcha-image" src="code.jpg" alt="验证码"/>
+                        <img width="130" height="43" id="captcha-image" src="code.jpg" alt="验证码" style="border-radius:4px;"/>
                     </span>
                 </div>
             </div>

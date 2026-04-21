@@ -31,8 +31,12 @@
 					</div>
 				</div>
 				<div class="mb-3">
-					<label class="form-label">评论的个人ID</label>
-					<input type="text" class="form-control" placeholder="评论用户ID" name="commentId" value="${commentId}" autofocus/>
+					<label class="form-label">Giscus Repo ID</label>
+					<input type="text" class="form-control" placeholder="GiscusRepoId" name="giscusRepoId" value="${giscusRepoId}"/>
+				</div>
+				<div class="mb-3">
+					<label class="form-label">Giscus Category ID</label>
+					<input type="text" class="form-control" placeholder="GiscusCategoryId" name="giscusCategoryId" value="${giscusCategoryId}"/>
 				</div>
 				<div class="mb-3">
 					<label class="form-label">天气查询AppCode</label>
@@ -46,7 +50,11 @@
 					<label class="form-label">站点副标题</label>
 					<input type="text" class="form-control" placeholder="站点副标题" name="subtitle" value="${subtitle}"/>
 				</div>
-				<button type="submit" class="btn btn-modern"><i class="bi bi-check-lg me-1"></i>保存设置</button>
+				<div class="mb-3">
+					<label class="form-label">ICP备案号</label>
+					<input type="text" class="form-control" placeholder="备案号" name="icp" value="${icp}"/>
+				</div>
+				<button type="submit" class="btn btn-modern"><i class="bi bi-check-lg me-1"></i>保存</button>
 			</form>
 		</div>
 	</div>

@@ -106,6 +106,18 @@ public class PostsServiceImpl implements PostsService {
         return postsMapper.getPostsByPostsIdWithTermsAndContent(postId);
     }
 
+    @Override
+    public PageInfo<Posts> getArticlesWithTermsFiltered(String postStatus, String slug, String dateFrom, String dateTo, int pageNum, int pageSize, int navigationSize) {
+        PageHelper.startPage(pageNum, pageSize);
+        List<Posts> list = postsMapper.listPostsWithTermsFiltered(
+                StringUtils.isEmpty(postStatus) ? null : postStatus,
+                StringUtils.isEmpty(slug) ? null : slug,
+                StringUtils.isEmpty(dateFrom) ? null : dateFrom,
+                StringUtils.isEmpty(dateTo) ? null : dateTo
+        );
+        return new PageInfo<>(list, navigationSize);
+    }
+
     @Cacheable(value = "postsCache", key = "'getArticlesWithTermsBySlug' + #postStatus + #pageNum + #slug")
     @Override
     public PageInfo<Posts> getArticlesWithTermsBySlug(String postStatus, int pageNum, int pageSize, int navigationSize, String slug) {

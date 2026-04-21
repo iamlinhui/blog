@@ -1,6 +1,6 @@
 package cn.promptness.blog.exception;
 
-import cn.promptness.blog.vo.HttpResult;
+import cn.promptness.blog.vo.HttpResultVO;
 import com.google.gson.Gson;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -37,7 +37,7 @@ public class BusinessExceptionResolver implements HandlerExceptionResolver, Orde
 
         ModelAndView mv = new ModelAndView();
         if (isJson(handler)) {
-            HttpResult errorResult = HttpResult.getErrorHttpResult(ex.getMessage());
+            HttpResultVO errorResult = HttpResultVO.getErrorHttpResult(ex.getMessage());
             if (ex instanceof BusinessException) {
                 errorResult.setCode(((BusinessException) ex).getCode());
             }

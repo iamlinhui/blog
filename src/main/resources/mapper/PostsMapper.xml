@@ -167,7 +167,7 @@
 
   <!-- List<PostsWithBLOBs> getArticlesWithTermsBySlug(@Param("slug")String slug,@Param("postStatus") String postStatus); -->
   <select id="getPostsWithTermsBySlug" resultMap="selectArticlesWithTermsNotContentResultMap">
-  	SELECT 
+  	SELECT
 	  p.`ID`,
 	  p.`post_author`,
 	  p.`post_date`,
@@ -179,7 +179,7 @@
 	  p.`comment_status`,
 	  t.`term_id`,
 	  t.`name`,
-	  t.`slug` 
+	  t.`slug`
 	FROM
 	  `wp_terms` t
 	  LEFT JOIN `wp_term_relationships` r
@@ -283,5 +283,19 @@
         ON t.`term_id`=r.`term_taxonomy_id`
         WHERE  MATCH (p.`post_title`,p.`post_excerpt`,p.`post_content`) AGAINST(#{key})
         <if test="postStatus!=null">AND p.`post_status`=#{postStatus}</if>
+    </select>
+    <select id="listPostsWithTermsFiltered" resultMap="selectBySlugWithTermsNotContentResultMap">
+        SELECT <include refid="without_post_content"/>
+        FROM wp_posts as p
+        <if test="slug != null and slug != ''">
+            LEFT JOIN `wp_term_relationships` r ON p.`ID` = r.`object_id`
+            LEFT JOIN `wp_terms` t ON t.`term_id` = r.`term_taxonomy_id`
+        </if>
+        WHERE true
+        <if test="postStatus != null and postStatus != ''">AND p.`post_status` = #{postStatus}</if>
+        <if test="slug != null and slug != ''">AND t.`slug` = #{slug}</if>
+        <if test="dateFrom != null and dateFrom != ''">AND p.`post_date` &gt;= #{dateFrom}</if>
+        <if test="dateTo != null and dateTo != ''">AND p.`post_date` &lt;= #{dateTo}</if>
+        ORDER BY p.`post_date` DESC
     </select>
 </mapper>

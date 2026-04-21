@@ -27,12 +27,15 @@ CREATE TABLE `wp_options` (
 -- ----------------------------
 -- Records of wp_options
 -- ----------------------------
-INSERT INTO `wp_options` VALUES ('1', 'title', '林省之');
+INSERT INTO `wp_options` VALUES ('1', 'title', '笔记簿');
 INSERT INTO `wp_options` VALUES ('2', 'subtitle', '生活不止眼前的苟且');
 INSERT INTO `wp_options` VALUES ('3', 'logoPath', 'static/img/favicon.ico');
 INSERT INTO `wp_options` VALUES ('4', 'userStatus', '0');
 INSERT INTO `wp_options` VALUES ('5', 'commentId', '');
 INSERT INTO `wp_options` VALUES ('6', 'appcode', '');
+INSERT INTO `wp_options` VALUES ('7', 'giscusRepoId', '');
+INSERT INTO `wp_options` VALUES ('8', 'giscusCategoryId', '');
+INSERT INTO `wp_options` VALUES ('9', 'icp', '');
 
 -- ----------------------------
 -- Table structure for wp_posts

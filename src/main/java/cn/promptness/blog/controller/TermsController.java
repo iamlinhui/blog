@@ -2,13 +2,12 @@ package cn.promptness.blog.controller;
 
 import cn.promptness.blog.pojo.Terms;
 import cn.promptness.blog.support.service.TermsService;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -52,21 +51,13 @@ public class TermsController {
     }
 
     /**
-     * 上移导航项
+     * 拖拽排序导航项
      */
-    @GetMapping(value = "/admin/up/{termId:.+}")
-    public String upTerms(@PathVariable("termId") Integer termId) {
-        termsService.upTerms(termId);
-        return "redirect:/admin/navigation";
-    }
-
-    /**
-     * 下移导航项
-     */
-    @GetMapping(value = "/admin/down/{termId:.+}")
-    public String downTerms(@PathVariable("termId") Integer termId) {
-        termsService.downTerms(termId);
-        return "redirect:/admin/navigation";
+    @PostMapping(value = "/admin/navigation/reorder")
+    @ResponseBody
+    public ResponseEntity<Void> reorderTerms(@RequestBody List<Integer> termIds) {
+        termsService.reorderTerms(termIds);
+        return ResponseEntity.ok().build();
     }
 
 }

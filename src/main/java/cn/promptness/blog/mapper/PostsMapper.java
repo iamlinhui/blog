@@ -26,4 +26,6 @@ public interface PostsMapper {
     List<Posts> listPostsWithTermsWithoutContent(@Param("postStatus") String postStatus);
 
     List<Posts> getPostsWithTermsForSearchV2(@Param("postStatus") String postStatus, @Param("key") String key);
+
+    List<Posts> listPostsWithTermsFiltered(@Param("postStatus") String postStatus, @Param("slug") String slug, @Param("dateFrom") String dateFrom, @Param("dateTo") String dateTo);
 }

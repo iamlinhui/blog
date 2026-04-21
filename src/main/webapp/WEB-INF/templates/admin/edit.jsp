@@ -27,10 +27,10 @@
 						<input value="${article.postExcerpt}" id="postExcerpt" name="postExcerpt" type="text" class="form-control" required/>
 					</div>
 				</div>
-				<div class="row g-3 mb-3">
-					<div class="col-auto">
+				<div class="d-flex flex-wrap gap-4 mb-3 align-items-start">
+					<div>
 						<label class="form-label">允许评论</label>
-						<div class="d-flex gap-3">
+						<div class="d-flex gap-3" style="min-height:34px;align-items:center;">
 							<div class="form-check">
 								<input class="form-check-input" id="commentOn" type="radio" name="commentStatus" value="true" <c:if test="${article.commentStatus=='open'}">checked</c:if>/>
 								<label class="form-check-label" for="commentOn">是</label>
@@ -41,22 +41,25 @@
 							</div>
 						</div>
 					</div>
-					<div class="col">
+					<div>
 						<label class="form-label">文章分类</label>
-						<div class="tag-select-wrap">
-							<div class="tag-select-trigger form-control" onclick="this.parentNode.classList.toggle('open')">
-								<span class="tag-select-placeholder">请选择分类...</span>
-								<i class="bi bi-chevron-down"></i>
+						<div class="tag-picker">
+							<div class="d-flex flex-wrap gap-2 align-items-center" style="min-height:34px;">
+								<c:forEach items="${termName}" var="term">
+									<input type="checkbox" name="termId" value="${term.termId}" id="tag_e_${term.termId}" class="tag-picker-cb" hidden <c:if test="${term.checked}">checked</c:if>>
+								</c:forEach>
+								<div class="tag-selected-list d-flex flex-wrap gap-2"></div>
+								<button type="button" class="tag-add-btn" onclick="this.closest('.tag-picker').querySelector('.tag-picker-menu').classList.toggle('show')"><i class="bi bi-plus-lg"></i></button>
 							</div>
-							<div class="tag-select-dropdown">
-								<c:forEach items="${terms}" var="term">
-									<label class="tag-select-option">
-										<input type="checkbox" name="termId" value="${term.termId}" <c:if test="${term.checked}">checked</c:if> onchange="updateSelectedTags(this.closest('.tag-select-wrap'))">
+							<div class="tag-picker-menu">
+								<c:forEach items="${termName}" var="term">
+									<label class="tag-picker-item" data-for="tag_e_${term.termId}">
+										<span class="tag-picker-dot"></span>
 										<span>${term.name}</span>
+										<i class="bi bi-check2 tag-picker-check"></i>
 									</label>
 								</c:forEach>
 							</div>
-							<div class="tag-selected-list d-flex flex-wrap gap-2 mt-2"></div>
 						</div>
 					</div>
 				</div>
@@ -64,7 +67,7 @@
 				<textarea id="postContent" name="postContent" style="display:none;">${article.postContent}</textarea>
 				<div class="d-flex gap-3">
 					<button class="btn btn-modern" type="submit" name="publish" value="publish"><i class="bi bi-send me-1"></i>发布</button>
-					<button class="btn btn-outline-modern" type="submit" name="draft" value="draft"><i class="bi bi-save me-1"></i>保存草稿</button>
+					<button class="btn btn-outline-modern" type="submit" name="draft" value="draft"><i class="bi bi-save me-1"></i>保存</button>
 				</div>
 			</form>
 		</div>
@@ -72,33 +75,40 @@
 	<%@include file="/WEB-INF/templates/common/foot.jsp" %>
 </div>
 <script>
-function updateSelectedTags(wrap) {
-    var list = wrap.querySelector('.tag-selected-list');
-    var placeholder = wrap.querySelector('.tag-select-placeholder');
-    var checks = wrap.querySelectorAll('input[type=checkbox]');
+function refreshTagPicker(picker) {
+    var list = picker.querySelector('.tag-selected-list');
     list.innerHTML = '';
-    var count = 0;
-    checks.forEach(function(cb) {
+    picker.querySelectorAll('.tag-picker-cb').forEach(function(cb) {
+        var item = picker.querySelector('[data-for="' + cb.id + '"]');
         if (cb.checked) {
-            count++;
+            item.classList.add('selected');
             var chip = document.createElement('span');
             chip.className = 'tag-chip';
-            chip.innerHTML = cb.nextElementSibling.textContent + '<i class="bi bi-x tag-remove"></i>';
-            chip.querySelector('.tag-remove').onclick = function() {
+            chip.innerHTML = item.querySelector('span:nth-child(2)').textContent + '<i class="bi bi-x tag-remove"></i>';
+            chip.querySelector('.tag-remove').onclick = function(e) {
+                e.stopPropagation();
                 cb.checked = false;
-                updateSelectedTags(wrap);
+                refreshTagPicker(picker);
             };
             list.appendChild(chip);
+        } else {
+            item.classList.remove('selected');
         }
     });
-    placeholder.textContent = count > 0 ? '已选择 ' + count + ' 个分类' : '请选择分类...';
 }
 document.addEventListener('click', function(e) {
-    document.querySelectorAll('.tag-select-wrap.open').forEach(function(w) {
-        if (!w.contains(e.target)) w.classList.remove('open');
+    document.querySelectorAll('.tag-picker-menu.show').forEach(function(m) {
+        if (!m.contains(e.target) && !e.target.closest('.tag-add-btn')) m.classList.remove('show');
     });
 });
-document.querySelectorAll('.tag-select-wrap').forEach(function(w) { updateSelectedTags(w); });
+document.querySelectorAll('.tag-picker-item').forEach(function(item) {
+    item.addEventListener('click', function() {
+        var cb = document.getElementById(item.getAttribute('data-for'));
+        cb.checked = !cb.checked;
+        refreshTagPicker(item.closest('.tag-picker'));
+    });
+});
+document.querySelectorAll('.tag-picker').forEach(function(p) { refreshTagPicker(p); });
 </script>
 </body>
 </html>

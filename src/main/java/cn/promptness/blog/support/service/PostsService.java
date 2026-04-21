@@ -25,4 +25,6 @@ public interface PostsService {
     PageInfo<Posts> getArticlesWithTermsForSearch(String postStatus, String key);
 
     Posts getArticleByPostsIdWithTermsAndContent(Integer postsId);
+
+    PageInfo<Posts> getArticlesWithTermsFiltered(String postStatus, String slug, String dateFrom, String dateTo, int pageNum, int pageSize, int navigationSize);
 }

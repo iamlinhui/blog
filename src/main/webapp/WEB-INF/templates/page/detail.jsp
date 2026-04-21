@@ -19,7 +19,7 @@
 						<h3>${article.postTitle}<c:if test="${not empty article.postExcerpt}"> - ${article.postExcerpt}</c:if></h3>
 					</div>
 					<div class="card-body-modern">
-						<div id="panel-body" style="display:none; opacity:0; transition:opacity 0.3s ease;">
+						<div id="panel-body" style="visibility:hidden; height:0; overflow:hidden;">
 							<script type="text/markdown">${article.postContent}</script>
 						</div>
 						<div class="md-loading" style="padding:40px; text-align:center; color:#aaa;">
@@ -35,20 +35,28 @@
 						</c:if>
 					</div>
 				</div>
-				<c:if test="${article.commentStatus=='open'}">
-					<div class="card-modern">
-						<div class="card-body-modern">
-							<div id="SOHUCS" sid="${article.id}"></div>
-						</div>
+			<c:if test="${article.commentStatus=='open'}">
+				<div class="card-modern">
+					<div class="card-body-modern">
+						<script src="https://giscus.app/client.js"
+								data-repo="iamlinhui/blog"
+								data-repo-id="${giscusRepoId}"
+								data-category="Q&A"
+								data-category-id="${giscusCategoryId}"
+								data-mapping="specific"
+								data-term="${article.id}"
+								data-strict="0"
+								data-reactions-enabled="1"
+								data-emit-metadata="0"
+								data-input-position="bottom"
+								data-theme="preferred_color_scheme"
+								data-lang="zh-CN"
+								crossorigin="anonymous"
+								async>
+						</script>
 					</div>
-					<script charset="utf-8" type="text/javascript" src="https://cy-cdn.kuaizhan.com/upload/changyan.js"></script>
-					<script type="text/javascript">
-						window.changyan.api.config({
-							appid: '${commentId}',
-							conf: '${commentKey}'
-						});
-					</script>
-				</c:if>
+				</div>
+			</c:if>
 			</div>
 		</div>
 		<%@include file="/WEB-INF/templates/common/foot.jsp" %>
@@ -61,32 +69,30 @@
 		if (scriptTag) {
 			var md = scriptTag.textContent;
 			scriptTag.remove();
-			// Render in an offscreen element to hide the process
-			var offscreen = document.createElement('div');
-			offscreen.style.cssText = 'position:fixed;left:-9999px;top:0;visibility:hidden;width:' + el.parentNode.offsetWidth + 'px;';
-			document.body.appendChild(offscreen);
-			Vditor.preview(offscreen, md, {
+			// Render directly in the element (visibility:hidden + height:0 hides process but allows layout calculation for mermaid)
+			Vditor.preview(el, md, {
 				markdown: { toc: true },
 				hljs: { lineNumber: true },
 				math: { engine: 'KaTeX' },
 				mermaid: { enable: true },
 				after: function() {
-					// Wait for async renders (mermaid etc.) to stabilize
+					// Wait for mermaid async SVG rendering to stabilize
 					var timer = null;
 					var observer = new MutationObserver(function() {
 						clearTimeout(timer);
 						timer = setTimeout(show, 500);
 					});
-					observer.observe(offscreen, { childList: true, subtree: true, attributes: true, characterData: true });
-					// Fallback: if no more mutations within 500ms after 'after', show
+					observer.observe(el, { childList: true, subtree: true, attributes: true, characterData: true });
 					timer = setTimeout(show, 500);
 					function show() {
 						observer.disconnect();
-						el.innerHTML = offscreen.innerHTML;
-						offscreen.remove();
 						var loading = el.parentNode.querySelector('.md-loading');
 						if (loading) loading.remove();
-						el.style.display = '';
+						el.style.height = '';
+						el.style.overflow = '';
+						el.style.visibility = 'visible';
+						el.style.opacity = '0';
+						el.style.transition = 'opacity 0.3s ease';
 						el.offsetHeight;
 						el.style.opacity = '1';
 					}

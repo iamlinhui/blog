@@ -27,7 +27,7 @@
 						</div>
 						<c:if test="${not empty article.postContent}">
 							<div class="card-body-modern">
-								<div class="vditor-preview" style="display:none; opacity:0; transition:opacity 0.3s ease;">
+								<div class="vditor-preview" style="visibility:hidden; height:0; overflow:hidden;">
 									<script type="text/markdown">${article.postContent}</script>
 								</div>
 								<div class="md-loading" style="padding:20px; text-align:center; color:#aaa;">
@@ -101,10 +101,7 @@
 			if (scriptTag) {
 				var md = scriptTag.textContent;
 				scriptTag.remove();
-				var offscreen = document.createElement('div');
-				offscreen.style.cssText = 'position:fixed;left:-9999px;top:0;visibility:hidden;width:' + el.parentNode.offsetWidth + 'px;';
-				document.body.appendChild(offscreen);
-				Vditor.preview(offscreen, md, {
+				Vditor.preview(el, md, {
 					markdown: { toc: true },
 					hljs: { lineNumber: true },
 					math: { engine: 'KaTeX' },
@@ -115,15 +112,17 @@
 							clearTimeout(timer);
 							timer = setTimeout(show, 500);
 						});
-						observer.observe(offscreen, { childList: true, subtree: true, attributes: true, characterData: true });
+						observer.observe(el, { childList: true, subtree: true, attributes: true, characterData: true });
 						timer = setTimeout(show, 500);
 						function show() {
 							observer.disconnect();
-							el.innerHTML = offscreen.innerHTML;
-							offscreen.remove();
 							var loading = el.parentNode.querySelector('.md-loading');
 							if (loading) loading.remove();
-							el.style.display = '';
+							el.style.height = '';
+							el.style.overflow = '';
+							el.style.visibility = 'visible';
+							el.style.opacity = '0';
+							el.style.transition = 'opacity 0.3s ease';
 							el.offsetHeight;
 							el.style.opacity = '1';
 						}
